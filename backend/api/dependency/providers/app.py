@@ -5,6 +5,7 @@ from fastapi import Request
 from backend.core import services
 from backend.core.services.faiss_service import FaissService
 from backend.infrastructure.database.connection.postgres_connection import DatabaseConnection
+from backend.utils.websocket.manager import WebSocketManager
 
 
 class AppProvider(Provider):
@@ -15,3 +16,7 @@ class AppProvider(Provider):
     @provide(scope=Scope.APP)
     async def get_faiss_service(self) -> services.FaissService:
         return services.FaissService()
+    
+    @provide(scope=Scope.APP)
+    async def get_ws_manager(self) -> WebSocketManager:
+        return WebSocketManager()
