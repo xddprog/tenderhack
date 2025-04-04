@@ -54,6 +54,9 @@ services:
       - DB_PORT=5432
       - DB_USER=postgres
       - DB_PASS=postgres
+      - JWT_SECRET=812659050808fd763749156b9b403c46a2338f082b4cc1316d3b0ac8794937aa
+      - JWT_ACCESS_TOKEN_TIME=15
+      - JWT_ALGORITHM=HS256
       - GPT_API_URL=https://c6a1-94-241-175-161.ngrok-free.app
       - NEXT_PUBLIC_API_BASE_URL=https://b976-176-124-206-69.ngrok-free.app
     ports:
