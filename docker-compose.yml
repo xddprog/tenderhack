@@ -1,0 +1,74 @@
+version: "3.0"
+
+services:
+  db:
+    image: postgres:15
+    container_name: db-store
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U postgres -h 127.0.0.1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - app-network
+
+  # nginx:
+  #   image: nginx:latest
+  #   container_name: nginx-proxy
+  #   volumes:
+  #     - /etc/nginx/sites-available/fasttaski.ru:/etc/nginx/conf.d/fasttaski.conf
+  #     - /etc/letsencrypt:/etc/letsencrypt:ro
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   depends_on:
+  #     - app
+  #   networks:
+  #     - app-network
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   container_name: frontend-store
+  #   ports:
+  #     - "5173:80"
+  #   depends_on:
+  #     - app
+  #   restart: always
+  #   networks:
+  #     - app-network
+
+  app:
+    build:
+      context: ./backend
+    container_name: app-store
+    environment:
+      - DB_NAME=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASS=postgres
+      - GPT_API_URL=https://c6a1-94-241-175-161.ngrok-free.app
+      - NEXT_PUBLIC_API_BASE_URL=https://b976-176-124-206-69.ngrok-free.app
+    ports:
+      - 8000:8000
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000 || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - app-network
+    depends_on:
+      - db
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
