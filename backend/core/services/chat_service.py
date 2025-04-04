@@ -8,10 +8,7 @@ from backend.infrastructure.database.models.chat import Chat
 class ChatService(BaseDbModelService[Chat]):
     repository: ChatRepository
 
-    async def get_chat_messages(self, chat_id: int) -> list[MessageModel]:
-        messages = await self.repository.chat_messages(chat_id)
-        return [MessageModel.model_validate(message, from_attributes=True) for message in messages]
-
     async def get_user_chats(self, user_id: int) -> list[ChatModel]:
         chats = await self.repository.get_user_chats(user_id)
         return [ChatModel.model_validate(chat, from_attributes=True) for chat in chats]
+    

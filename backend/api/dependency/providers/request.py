@@ -21,12 +21,21 @@ class RequestProvider(Provider):
             await session.close()
 
     @provide(scope=Scope.REQUEST)
-    def get_auth_service(self, session: AsyncSession) -> services.AuthService:
-        return services.AuthService(repository=repositories.UserRepository(session=session))
+    async def get_auth_service(self, session: AsyncSession) -> services.AuthService:
+        return services.AuthService(repository=repositories.UserRepository(session))
 
     @provide(scope=Scope.REQUEST)
-    def get_user_service(self, session: AsyncSession) -> services.UserService:    
-        return services.UserService(repository=repositories.UserRepository(session=session))
+    async def get_user_service(self, session: AsyncSession) -> services.UserService:    
+        return services.UserService(repository=repositories.UserRepository(session))
+    
+    @provide(scope=Scope.REQUEST)
+    async def get_chat_service(self, session: AsyncSession) -> services.ChatService:
+        return services.ChatService(repository=repositories.ChatRepository(session))
+    
+    @provide(scope=Scope.REQUEST)
+    async def get_message_service(self, session: AsyncSession) -> services.ChatService:
+        return services.MessageService(repository=repositories.MessageRepository(session))
+    
     
 @inject
 async def get_current_user_dependency(

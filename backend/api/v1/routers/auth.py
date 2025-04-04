@@ -25,10 +25,10 @@ async def get_current_user(
 async def login_user(
     form: LoginForm,
     auth_service: FromDishka[services.AuthService],
-) -> str:
+) -> dict:
     user = await auth_service.authenticate_user(form)
     token = await auth_service.create_access_token(user.email)
-    return token
+    return {"token": token}
 
 
 @router.post("/register", status_code=201)
@@ -36,7 +36,7 @@ async def login_user(
 async def register_user(
     form: RegisterForm,
     auth_service: FromDishka[services.AuthService],
-) -> str:
+) -> dict:
     new_user = await auth_service.register_user(form)
     token = await auth_service.create_access_token(new_user.email)
-    return token
+    return {"token": token}

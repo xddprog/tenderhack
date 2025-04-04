@@ -1,2 +1,3 @@
 from backend.core.repositories.user_repository import UserRepository
 from backend.core.repositories.chat_repository import ChatRepository
+from backend.core.repositories.message_repository import MessageRepository

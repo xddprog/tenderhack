@@ -1,0 +1,19 @@
+from backend.core.dto.chat_dto import ChatModel
+from backend.core.dto.message_dto import MessageModel
+from backend.core.repositories.chat_repository import ChatRepository
+from backend.core.repositories.message_repository import MessageRepository
+from backend.core.services.base import BaseDbModelService
+from backend.infrastructure.database.models.chat import Chat
+from backend.infrastructure.database.models.message import Message
+
+
+class MessageService(BaseDbModelService[Message]):
+    repository: MessageRepository
+
+    async def get_chat_messages(self, chat_id: int) -> list[MessageModel]:
+        messages = await self.repository.get_chat_messages(chat_id)
+        return [MessageModel.model_validate(message, from_attributes=True) for message in messages]
+
+    async def create(self, **kwargs) -> MessageModel:
+        message = await super().create(**kwargs)
+        return MessageModel.model_validate(message, from_attributes=True)
