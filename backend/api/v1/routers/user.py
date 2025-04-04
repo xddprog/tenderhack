@@ -14,5 +14,9 @@ router = APIRouter()
 
 
 @router.get("/chats")
-async def get_user_chats():
-    pass
+@inject
+async def get_user_chats(
+    chat_service: FromDishka[services.ChatService],
+    current_user: Annotated[BaseUserModel, Depends(get_current_user_dependency)]
+):
+    return await chat_service.get_user_chats(current_user.id)
