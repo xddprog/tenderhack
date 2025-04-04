@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { rootReducer } from "@/shared/model/store";
 import { IViewerSlice } from "../types/types";
-import { EModalVariables } from "@/shared/lib/modalVariables";
+import { EModalVariables } from "@/shared/libs/modalVariables";
 
 const initialState: IViewerSlice = {
   selectType: null,

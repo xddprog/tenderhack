@@ -1,4 +1,4 @@
-import { EModalVariables } from "@/shared/lib/modalVariables";
+import { EModalVariables } from "@/shared/libs/modalVariables";
 
 export interface IViewerSlice {
   isOpen: boolean;
