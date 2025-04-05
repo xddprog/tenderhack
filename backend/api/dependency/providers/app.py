@@ -20,3 +20,7 @@ class AppProvider(Provider):
     @provide(scope=Scope.APP)
     async def get_ws_manager(self) -> WebSocketManager:
         return WebSocketManager()
+    
+    @provide(scope=Scope.APP)
+    async def get_pipeline_service(self) -> services.PipelineService:
+        return services.PipelineService()

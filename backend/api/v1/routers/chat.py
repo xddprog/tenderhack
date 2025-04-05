@@ -44,7 +44,8 @@ async def connect_chat(
     websocket: WebSocket,
     message_service: FromDishka[services.MessageService],
     auth_service: FromDishka[services.AuthService],
-    manager: FromDishka[WebSocketManager]
+    manager: FromDishka[WebSocketManager],
+    pipeline_service: FromDishka[services.PipelineService],
 ):
     try:
         await manager.connect(chat_id, websocket)
@@ -57,10 +58,11 @@ async def connect_chat(
             message = await message_service.create(user_input, user.id, chat_id, from_user=True)
             await manager.broadcast(chat_id, message, ChatEvents.USER)
  
-            generated_message = "madk1d number 1" #todo
+            connection = manager.active_connections.get(chat_id)
+            generated_message = await pipeline_service.process_query(connection, user_input)
             message = await message_service.create(generated_message, user.id, chat_id, from_user=False)
-            await manager.broadcast(chat_id, message, ChatEvents.GPT)
+            # await manager.broadcast(chat_id, message, ChatEvents.GPT)
     except HTTPException as e:
-        await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code))
+        await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code), event=ChatEvents.ERROR)
     finally:
         await manager.disconnect(chat_id)

@@ -35,6 +35,7 @@ class RequestProvider(Provider):
     @provide(scope=Scope.SESSION)
     async def get_message_service(self, session: AsyncSession) -> services.MessageService:
         return services.MessageService(repository=repositories.MessageRepository(session))
+
     
     
 @inject
