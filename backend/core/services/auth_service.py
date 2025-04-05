@@ -43,14 +43,14 @@ class AuthService:
             JWT_CONFIG.JWT_SECRET, 
             algorithm=JWT_CONFIG.JWT_ALGORITHM
         )
-        return token
+        return {"token": token}
     
-    async def verify_token(self, token: HTTPAuthorizationCredentials) -> str:
+    async def verify_token(self, token: HTTPAuthorizationCredentials | str) -> BaseUserModel:
         if not token:
             raise InvalidToken
         try:
             payload = decode(
-                token.credentials,
+                token if isinstance(token, str) else token.credentials,
                 JWT_CONFIG.JWT_SECRET,
                 algorithms=[JWT_CONFIG.JWT_ALGORITHM],
             )

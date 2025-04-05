@@ -12,7 +12,7 @@ from backend.infrastructure.database.connection.postgres_connection import Datab
 
 
 class RequestProvider(Provider):
-    @provide(scope=Scope.REQUEST)
+    @provide(scope=Scope.SESSION)
     async def get_session(self, db_connection: DatabaseConnection) -> AsyncIterable[AsyncSession]:
         session = await db_connection.get_session()
         try:
@@ -20,7 +20,7 @@ class RequestProvider(Provider):
         finally:
             await session.close()
 
-    @provide(scope=Scope.REQUEST)
+    @provide(scope=Scope.SESSION)
     async def get_auth_service(self, session: AsyncSession) -> services.AuthService:
         return services.AuthService(repository=repositories.UserRepository(session))
 
@@ -32,8 +32,8 @@ class RequestProvider(Provider):
     async def get_chat_service(self, session: AsyncSession) -> services.ChatService:
         return services.ChatService(repository=repositories.ChatRepository(session))
     
-    @provide(scope=Scope.REQUEST)
-    async def get_message_service(self, session: AsyncSession) -> services.ChatService:
+    @provide(scope=Scope.SESSION)
+    async def get_message_service(self, session: AsyncSession) -> services.MessageService:
         return services.MessageService(repository=repositories.MessageRepository(session))
     
     

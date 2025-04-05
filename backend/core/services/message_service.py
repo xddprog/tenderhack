@@ -14,6 +14,11 @@ class MessageService(BaseDbModelService[Message]):
         messages = await self.repository.get_chat_messages(chat_id)
         return [MessageModel.model_validate(message, from_attributes=True) for message in messages]
 
-    async def create(self, **kwargs) -> MessageModel:
-        message = await super().create(**kwargs)
+    async def create(self, text: str, user_id: int, chat_id: int, from_user: bool) -> MessageModel:
+        message = await super().create(
+            text=text, 
+            user_id=user_id, 
+            chat_id=chat_id, 
+            from_user=from_user
+        )
         return MessageModel.model_validate(message, from_attributes=True)

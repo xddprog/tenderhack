@@ -22,4 +22,4 @@ class WebSocketManager:
     async def broadcast(self, chat_id: str, message: BaseModel):
         conn = self.active_connections.get(chat_id)
         if conn:
-            conn.send_json(message.model_dump())
+            await conn.send_json(message.model_dump())

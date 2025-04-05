@@ -17,7 +17,7 @@ def create_lifespan(di_container: AsyncContainer):
     @asynccontextmanager
     async def lifespan(app: FastAPI):
         db: DatabaseConnection = await di_container.get(DatabaseConnection)
-        faiss: FaissService = await di_container.get(FaissService)
+        # faiss: FaissService = await di_container.get(FaissService)
         await db.create_tables()
         # faiss.build_knowledge_base()
         # print(faiss.search({
@@ -34,7 +34,7 @@ app = FastAPI(lifespan=create_lifespan(di_container))
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "https://www.fasttaski.ru", "https://fasttaski.ru"],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

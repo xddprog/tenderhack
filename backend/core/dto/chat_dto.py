@@ -2,6 +2,6 @@ from pydantic import BaseModel
 
 
 class ChatModel(BaseModel):
-    chat_id: int
+    id: int
     title: str
     

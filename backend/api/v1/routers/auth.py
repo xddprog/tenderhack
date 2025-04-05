@@ -27,8 +27,7 @@ async def login_user(
     auth_service: FromDishka[services.AuthService],
 ) -> dict:
     user = await auth_service.authenticate_user(form)
-    token = await auth_service.create_access_token(user.email)
-    return {"token": token}
+    return await auth_service.create_access_token(user.email)
 
 
 @router.post("/register", status_code=201)
@@ -38,5 +37,4 @@ async def register_user(
     auth_service: FromDishka[services.AuthService],
 ) -> dict:
     new_user = await auth_service.register_user(form)
-    token = await auth_service.create_access_token(new_user.email)
-    return {"token": token}
+    return await auth_service.create_access_token(new_user.email)

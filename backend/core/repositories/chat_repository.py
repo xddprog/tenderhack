@@ -7,7 +7,7 @@ from backend.infrastructure.database.models.message import Message
 
 class ChatRepository(SqlAlchemyRepository[Chat]):
     def __init__(self, session: AsyncSession):
-        super.__init__(session, Chat)
+        super().__init__(session, Chat)
 
     async def get_user_chats(self, user_id: int):
         query = select(Chat).where(Chat.user_id == user_id)
