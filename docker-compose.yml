@@ -46,6 +46,7 @@ services:
   app:
     build:
       context: ./backend
+    network_mode: "host"
     container_name: app-store
     environment:
       - DB_NAME=postgres
@@ -71,8 +72,6 @@ services:
     depends_on:
       - db
     restart: always
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
 
 networks:
   app-network:
