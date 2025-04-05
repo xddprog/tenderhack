@@ -1,3 +1,4 @@
+import { chatActions } from "@/entities/chat/model/store/chatSlice";
 import { messageActions } from "@/entities/message/models/store/messageSlice";
 import { socketActions } from "@/entities/socket/model/store/socketSlice";
 import { userActions } from "@/entities/user/models/store/userSlice";
@@ -14,6 +15,7 @@ export const useActions = () => {
       ...messageActions,
       ...viewerActions,
       ...userActions,
+      ...chatActions,
     },
     dispatch
   );

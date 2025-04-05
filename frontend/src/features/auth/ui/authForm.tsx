@@ -109,8 +109,9 @@ export const AuthForm: FC<IAuthForm> = ({ handlePermanent }) => {
       {authType === "confirm" && (
         <>
           <Button
+            variant={"ghost"}
             value={"auth"}
-            className="w-full rounded-xl py-5 bg-white text-black hover:bg-white/70 transition-colors"
+            className="w-full rounded-xl py-5 bg-white text-black hover:bg-white transition-colors"
             onClick={handleSelectAuthType}
           >
             Войти
@@ -174,12 +175,10 @@ export const AuthForm: FC<IAuthForm> = ({ handlePermanent }) => {
           <Button
             disabled={authType === "auth" ? isLoginPending : isRegisterPending}
             type="submit"
+            variant={"ghost"}
             className="w-full  bg-white text-black hover:bg-white/70 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
           >
             {authType === "auth" ? "Войти" : "Зарегистрироваться"}
-            {(isLoginPending || isRegisterPending) && (
-              <span className="ml-2 inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            )}
           </Button>
           <p className="text-center">
             Или{" "}

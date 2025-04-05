@@ -22,6 +22,8 @@ export const useChatSocket = () => {
     }
   );
 
+  console.log(messages);
+
   return {
     messages,
   };

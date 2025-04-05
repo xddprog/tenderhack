@@ -18,8 +18,9 @@ class ChatService {
     return data;
   }
 
-  public async setNewChat() {
-    return await axiosAuth.post("chat");
+  public async setNewChat(): Promise<IHistoryChats> {
+    const { data } = await axiosAuth.post<IHistoryChats>("chat");
+    return data;
   }
 
   public async getChatMessage({ chatId }: { chatId: string }) {
