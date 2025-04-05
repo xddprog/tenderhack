@@ -11,7 +11,12 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    command: ["run", "yandex/YandexGPT-5-Lite-8B-instruct-GGUF"]
+    entrypoint: ["/bin/sh", "-c"]
+    command: >
+      ollama serve &
+      sleep 10  # Даем время на запуск сервера
+      ollama run yandex/YandexGPT-5-Lite-8B-instruct-GGUF
+      wait 
 
   db:
     image: postgres:15
