@@ -1,5 +1,5 @@
+from pathlib import Path
 from environs import Env
-from fastapi import Path
 from pydantic import BaseModel
 
 
