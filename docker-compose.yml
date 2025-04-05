@@ -5,7 +5,7 @@ services:
     image: postgres:15
     container_name: db-store
     ports:
-      - "5433:5432"  # Добавьте кавычки для портов
+      - "5433:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -46,12 +46,12 @@ services:
   app:
     build:
       context: ./backend
-    network_mode: "host"  # Сервис теперь в host-режиме
+    network_mode: "host"
     container_name: app-store
     environment:
       - DB_NAME=postgres
-      - DB_HOST=localhost  # Измените с 'db' на 'localhost', так как host-режим не использует Docker DNS
-      - DB_PORT=5433       # Используйте внешний порт 5433 (который проброшен для db)
+      - DB_HOST=localhost
+      - DB_PORT=5433
       - DB_USER=postgres
       - DB_PASS=postgres
       - JWT_SECRET=812659050808fd763749156b9b403c46a2338f082b4cc1316d3b0ac8794937aa
@@ -60,11 +60,9 @@ services:
       - JWT_REFRESH_TOKEN_TIME=3
       - NEXT_PUBLIC_API_BASE_URL="/api/v1/"
       - NEXT_PUBLIC_WS_BASE_URL="/api/v1/"
-    # Порт 8000 уже доступен на хосте автоматически в host-режиме, поэтому 'ports' можно удалить
     depends_on:
       - db
     restart: always
-    # Уберите networks, так как они не работают в host-режиме
 
 networks:
   app-network:
