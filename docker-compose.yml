@@ -48,8 +48,7 @@ services:
     image: nginx:latest
     container_name: nginx-proxy
     volumes:
-      - /etc/nginx/sites-available/fasttaski.ru:/etc/nginx/conf.d/fasttaski.conf
-      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /etc/nginx/sites-available/tenderhack.ru:/etc/nginx/conf.d/tenderhack.conf
     ports:
       - "80:80"
       - "443:443"
