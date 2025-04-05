@@ -37,7 +37,7 @@ services:
       context: ./frontend
     container_name: frontend-store
     ports:
-      - "5173:80"
+      - "3000:80"
     depends_on:
       - app 
     restart: always
@@ -51,7 +51,6 @@ services:
       - /etc/nginx/sites-available/tenderhack:/etc/nginx/conf.d/tenderhack.conf
     ports:
       - "80:80"
-      - "443:443"
     depends_on:
       - app
       - frontend
