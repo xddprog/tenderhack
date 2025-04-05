@@ -19,7 +19,10 @@ class WebSocketManager:
                 pass
             del self.active_connections[chat_id]
 
-    async def broadcast(self, chat_id: str, message: BaseModel):
+    async def broadcast(self, chat_id: str, message: BaseModel, event: str):
         conn = self.active_connections.get(chat_id)
         if conn:
-            await conn.send_json(message.model_dump())
+            await conn.send_json({
+                "data": message.model_dump(),
+                "event": event
+            })

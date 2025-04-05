@@ -11,6 +11,7 @@ from backend.core.dto.chat_dto import ChatModel
 from backend.core.dto.message_dto import MessageModel
 from backend.core.dto.user_dto import BaseUserModel
 from backend.infrastructure.errors.websocket_errors import WebsocketError
+from backend.utils.enums import ChatEvents
 from backend.utils.websocket.manager import WebSocketManager
 
 
@@ -54,11 +55,11 @@ async def connect_chat(
             user_input = user_input["content"]
 
             message = await message_service.create(user_input, user.id, chat_id, from_user=True)
-            await manager.broadcast(chat_id, message)
-
+            await manager.broadcast(chat_id, message, ChatEvents.USER)
+ 
             generated_message = "madk1d number 1" #todo
             message = await message_service.create(generated_message, user.id, chat_id, from_user=False)
-            await manager.broadcast(chat_id, message)
+            await manager.broadcast(chat_id, message, ChatEvents.GPT)
     except HTTPException as e:
         await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code))
     finally:
