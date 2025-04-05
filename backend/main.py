@@ -9,17 +9,21 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.dependency.setup import setup_container
 from backend.api.v1.routers import v1_router
+from backend.core.services.albert_service import AlbertTrainingService
 from backend.core.services.faiss_service import FaissService
 from backend.infrastructure.database.connection.postgres_connection import DatabaseConnection
 
 
 def create_lifespan(di_container: AsyncContainer):
     @asynccontextmanager
-    async def lifespan(app: FastAPI):
+    async def lifespan(app: FastAPI):   
         db: DatabaseConnection = await di_container.get(DatabaseConnection)
-        # faiss: FaissService = await di_container.get(FaissService)
+        # albert = AlbertTrainingService()
+        # albert.train_model()
+        # albert.save_model_and_data()
+
         await db.create_tables()
-        # faiss.build_knowledge_base()
+        FaissService.create_and_save_vector_db()
         # print(faiss.search({
         #     "distances": [0.12, 0.45],
         #     "texts": ["Машинное обучение — это...", "Алгоритмы ML помогают..."]
