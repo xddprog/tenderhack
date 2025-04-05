@@ -11,11 +11,7 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    command: >
-      sh -c "ollama serve &
-      until ollama list; do sleep 1; done
-      ollama pull yandex/YandexGPT-5-Lite-8B-instruct-GGUF
-      wait"
+    command: ollama run yandex/YandexGPT-5-Lite-8B-instruct-GGUF
 
   db:
     image: postgres:15
