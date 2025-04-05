@@ -13,10 +13,7 @@ services:
     restart: unless-stopped
     entrypoint: ["/bin/sh", "-c"]
     command: >
-      ollama serve &
-      sleep 10  # Даем время на запуск сервера
       ollama run yandex/YandexGPT-5-Lite-8B-instruct-GGUF
-      wait 
 
   db:
     image: postgres:15
