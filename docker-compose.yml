@@ -11,7 +11,7 @@ services:
     networks:
       - app-network
     restart: unless-stopped
-    command: ["sh", "-c", "ollama",  "run", "yandex/YandexGPT-5-Lite-8B-instruct-GGUF"]
+    command: ["run", "yandex/YandexGPT-5-Lite-8B-instruct-GGUF"]
 
   db:
     image: postgres:15
