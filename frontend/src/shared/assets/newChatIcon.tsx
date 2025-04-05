@@ -1,12 +1,16 @@
-import React, { FC } from "react";
+import clsx from "clsx";
+import { FC } from "react";
 
-export const NewChatIcon = () => {
+interface INewChatIcon {
+  classname?: string;
+}
+export const NewChatIcon: FC<INewChatIcon> = ({ classname }) => {
   return (
     <svg
       width="24"
       height="24"
       viewBox="0 0 24 24"
-      className="cursor-pointer"
+      className={clsx("cursor-pointer", classname)}
       color="white"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"

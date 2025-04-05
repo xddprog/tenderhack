@@ -1,5 +1,6 @@
 import { ScrollArea } from "@/shared/ui/scrollArea/scrollArea";
 import clsx from "clsx";
+import Image from "next/image";
 import React, { FC } from "react";
 
 interface IAssistantAside {
@@ -17,14 +18,19 @@ export const AssistantAside: FC<IAssistantAside> = ({
       )}
     >
       <div className="flex flex-col h-full">
-        <div>
-          <div className="px-4 py-6 text-xl font-semibold">VERSACC</div>
+        <div className="md:px-4 md:pt-6  text-xl font-semibold">
+          <Image
+            src={"/image/logo.png"}
+            alt="logo-company"
+            width={163}
+            height={36}
+          />
         </div>
 
-        <ScrollArea className="flex-1 overflow-y-auto px-2 space-y-5">
+        <ScrollArea className="flex-1 md:px-2 pb-4 space-y-5">
           <div className="space-y-3 pb-4">
-            <div className="flex flex-col gap-2">
-              <span className="px-3">Today</span>
+            <div className="flex flex-col gap-1">
+              <span className="px-3 text-sm">Today</span>
               <section className="pl-2">
                 <button className="block text-left w-full py-1 hover:bg-neutral-600 rounded-md px-3">
                   Get Started
@@ -34,8 +40,8 @@ export const AssistantAside: FC<IAssistantAside> = ({
                 </button>
               </section>
             </div>
-            <div className="flex flex-col gap-2">
-              <span className="px-3">Today</span>
+            <div className="flex flex-col gap-1">
+              <span className="px-3 text-sm">Today</span>
               <section className="pl-2">
                 <button className="block text-left w-full py-1 hover:bg-neutral-600 rounded-md px-3">
                   Get Started
@@ -45,8 +51,8 @@ export const AssistantAside: FC<IAssistantAside> = ({
                 </button>
               </section>
             </div>
-            <div className="flex flex-col gap-2">
-              <span className="px-3">Today</span>
+            <div className="flex flex-col gap-1">
+              <span className="px-3 text-sm">Today</span>
               <section className="pl-2">
                 <button className="block text-left w-full py-1 hover:bg-neutral-600 rounded-md px-3">
                   Get Started
@@ -56,8 +62,8 @@ export const AssistantAside: FC<IAssistantAside> = ({
                 </button>
               </section>
             </div>
-            <div className="flex flex-col gap-2">
-              <span className="px-3">Today</span>
+            <div className="flex flex-col gap-1">
+              <span className="px-3 text-sm">Today</span>
               <section className="pl-2">
                 <button className="block text-left w-full py-1 hover:bg-neutral-600 rounded-md px-3">
                   Get Started

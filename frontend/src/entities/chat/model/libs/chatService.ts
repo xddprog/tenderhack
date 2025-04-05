@@ -1,0 +1,31 @@
+import { axiosAuth } from "@/shared/api/baseQueryInstanse";
+import { IHistoryChats } from "../../types/types";
+
+class ChatService {
+  private static instance: ChatService;
+
+  public static getInstance(): ChatService {
+    if (!ChatService.instance) {
+      ChatService.instance = new ChatService();
+    }
+
+    return ChatService.instance;
+  }
+
+  public async getHistoryChat(): Promise<Array<IHistoryChats>> {
+    const { data } = await axiosAuth.get<Array<IHistoryChats>>("user/chats");
+
+    return data;
+  }
+
+  public async setNewChat() {
+    return await axiosAuth.post("chat");
+  }
+
+  public async getChatMessage({ chatId }: { chatId: string }) {
+    return await axiosAuth.get(`${chatId}/messages`);
+  }
+}
+
+export const { getHistoryChat, setNewChat, getChatMessage } =
+  ChatService.getInstance();

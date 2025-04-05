@@ -11,7 +11,6 @@ class JwtConfig(BaseModel):
     JWT_SECRET: str
     JWT_ALGORITHM: str
     JWT_ACCESS_TOKEN_TIME: int
-    JWT_REFRESH_TOKEN_TIME: int
 
 
 JWT_CONFIG = JwtConfig(

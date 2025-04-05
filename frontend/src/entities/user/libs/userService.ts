@@ -1,5 +1,9 @@
 import axios from "axios";
-import { IAuthorizationRequest, IRegistrationRequest } from "../types/types";
+import {
+  IAuthorizationRequest,
+  ICurrentUser,
+  IRegistrationRequest,
+} from "../types/types";
 import { axiosAuth, axiosNoAuth } from "@/shared/api/baseQueryInstanse";
 
 class UserService {
@@ -15,25 +19,32 @@ class UserService {
     return UserService.instance;
   }
 
-  public async registration(requestBody: IRegistrationRequest) {
-    const { data } = await axiosNoAuth.post(
-      "",
+  public async registration(
+    requestBody: IRegistrationRequest
+  ): Promise<string> {
+    const { data } = await axiosNoAuth.post<{ token: string }>(
+      "auth/register",
       requestBody as unknown as Record<string, unknown>
     );
 
-    return data;
+    return data.token;
   }
-  public async authorization(requestBody: IAuthorizationRequest) {
-    const { data } = await axiosNoAuth.post(
-      "",
+  public async authorization(
+    requestBody: IAuthorizationRequest
+  ): Promise<string> {
+    const { data } = await axiosNoAuth.post<{ token: string }>(
+      "auth/login",
       requestBody as unknown as Record<string, unknown>
     );
 
-    return data;
+    return data.token;
   }
-  public async getCurrentUser() {
-    return await axiosAuth.get("");
+  public async getCurrentUser(): Promise<ICurrentUser> {
+    const { data } = await axiosAuth.get<ICurrentUser>("auth/current_user");
+
+    return data;
   }
 }
 
-export const {} = UserService.getInstance();
+export const { registration, authorization, getCurrentUser } =
+  UserService.getInstance();

@@ -32,6 +32,8 @@ export class AxiosClient {
   private addAuthInterceptor() {
     this.baseQueryV1Instance.interceptors.request.use((config) => {
       const token = getAccessToken();
+      console.log("interceptor", token);
+
       if (config && config.headers && token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       } else {
