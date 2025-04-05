@@ -58,7 +58,7 @@ class PipelineService:
         
         # Send the request to Ollama API with streaming enabled
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=data, headers={"Content-Type": "application/json"}) as response:
+            async with session.post(url, json=data, headers={"Content-Type": "application/json"}, ssl=False) as response:
                 search_query = ""
                 async for line in response.content:
                     if line:
