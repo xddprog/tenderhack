@@ -34,7 +34,7 @@ services:
     image: nginx:latest
     container_name: nginx-proxy
     volumes:
-      - /etc/nginx/sites-available/tenderhack/tenderhack.conf:/etc/nginx/conf.d/tenderhack.conf
+      - /etc/nginx/sites-available/tenderhack:/etc/nginx/conf.d/tenderhack.conf
     ports:
       - "80:80"
     depends_on:
