@@ -71,6 +71,8 @@ services:
     depends_on:
       - db
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   app-network:
