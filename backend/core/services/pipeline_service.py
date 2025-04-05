@@ -47,7 +47,7 @@ class PipelineService:
 Ответ:
 """
         # Define the Ollama API endpoint
-        url = "http://host.docker.internal:11434/api/generate"
+        url = "http://ollama:11434/api/generate"
         
         # Prepare the request payload
         data = {
