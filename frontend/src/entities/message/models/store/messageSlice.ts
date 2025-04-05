@@ -19,7 +19,7 @@ export const messageSlice = createSlice({
         state.messages.push(payload);
       }
     ),
-    resetMessage: create.reducer((state, { payload }) => {
+    resetMessage: create.reducer((state) => {
       state.messages = [];
     }),
     setChatMessages: create.reducer(
