@@ -5,20 +5,20 @@ services:
     image: ollama/ollama:latest
     container_name: ollama
     ports:
-      - "11435:11434"  # Важно использовать одинаковый порт внутри и снаружи
+      - "11435:11434"  # Внешний порт:11435 → внутренний :11434
     volumes:
-      - ./ollama_data:/root/.ollama  # Для хранения моделей
+      - ./ollama_data:/root/.ollama
     networks:
       - app-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:11434 || exit 1"]
-      interval: 5s
+      test: ["CMD", "ollama", "serve"]  # Проверка доступности сервиса
+      interval: 10s
       timeout: 5s
-      retries: 10
-    command: >
-      sh -c "
-      ollama pull yandex/YandexGPT-5-Lite-8B-instruct-GGUF &&
+      retries: 5
+    entrypoint: /bin/sh
+    command: -c "
+      ollama pull yandex/YandexGPT-5-Lite-8B-instruct-GGUF && 
       ollama serve
       "
 
