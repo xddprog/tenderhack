@@ -52,7 +52,8 @@ class PipelineService:
         # Prepare the request payload
         data = {
             "model": "yandex/YandexGPT-5-Lite-8B-instruct-GGUF:latest",
-            "prompt": prompt
+            "prompt": prompt,
+            "stream": True
         }
         
         # Send the request to Ollama API with streaming enabled
