@@ -47,7 +47,7 @@ class PipelineService:
 Ответ:
 """
         # Define the Ollama API endpoint
-        url = "http://89.104.68.181:11434/api/generate"
+        url = "http://localhost:11434/api/generate"
         
         # Prepare the request payload
         data = {
