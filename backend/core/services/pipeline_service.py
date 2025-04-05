@@ -1,7 +1,7 @@
 import aiohttp
 from fastapi import WebSocket
-from langchain.vectorstores import FAISS
-from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
 import json
 
 from backend.infrastructure.config.database_configs import FAISS_CONFIG
