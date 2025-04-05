@@ -1,4 +1,5 @@
 from environs import Env
+from fastapi import Path
 from pydantic import BaseModel
 
 
@@ -29,7 +30,7 @@ DB_CONFIG = DatabaseConfig(
     **{field: env.str(field.upper()) for field in DatabaseConfig.model_fields}
 )
 FAISS_CONFIG = FaissConfig(
-    EXCEL_PATH="/Users/mago/copilot-assistant/backend/utils/faiss_data/Статьи.xls",
-    TITLE_INDEX_PATH="/Users/mago/copilot-assistant/backend/utils/faiss_data/title_faiss_index",
-    CHUNK_INDEX_PATH="/Users/mago/copilot-assistant/backend/utils/faiss_data/chunk_faiss_index"
+    EXCEL_PATH=Path(__file__).resolve().parent.parent.parent / "/utils" / "faiss_data" / "Статьи.xls",
+    TITLE_INDEX_PATH=Path(__file__).resolve().parent.parent.parent  / "/utils" /"faiss_data" / "title_faiss_index",
+    CHUNK_INDEX_PATH=Path(__file__).resolve().parent.parent.parent / "utils" / "faiss_data" / "chunk_faiss_index"
 )
