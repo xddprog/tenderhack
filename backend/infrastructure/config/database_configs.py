@@ -30,7 +30,7 @@ DB_CONFIG = DatabaseConfig(
     **{field: env.str(field.upper()) for field in DatabaseConfig.model_fields}
 )
 FAISS_CONFIG = FaissConfig(
-    EXCEL_PATH=Path(__file__).resolve().parent.parent.parent / "/utils" / "faiss_data" / "Статьи.xls",
-    TITLE_INDEX_PATH=Path(__file__).resolve().parent.parent.parent  / "/utils" /"faiss_data" / "title_faiss_index",
-    CHUNK_INDEX_PATH=Path(__file__).resolve().parent.parent.parent / "utils" / "faiss_data" / "chunk_faiss_index"
+    EXCEL_PATH=str(Path(__file__).resolve().parent.parent.parent / "/utils" / "faiss_data" / "Статьи.xls"),
+    TITLE_INDEX_PATH=str(Path(__file__).resolve().parent.parent.parent  / "/utils" /"faiss_data" / "title_faiss_index"),
+    CHUNK_INDEX_PATH=str(Path(__file__).resolve().parent.parent.parent / "utils" / "faiss_data" / "chunk_faiss_index")
 )
