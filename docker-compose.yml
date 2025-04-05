@@ -5,15 +5,22 @@ services:
     image: ollama/ollama:latest
     container_name: ollama
     ports:
-      - "11435:11434"  # Основной порт Ollama
+      - "11434:11434"  # Важно использовать одинаковый порт внутри и снаружи
     volumes:
       - ./ollama_data:/root/.ollama  # Для хранения моделей
     networks:
       - app-network
     restart: unless-stopped
-    entrypoint: ["/bin/sh", "-c"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:11434 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     command: >
-      ollama run yandex/YandexGPT-5-Lite-8B-instruct-GGUF
+      sh -c "
+      ollama pull yandex/YandexGPT-5-Lite-8B-instruct-GGUF &&
+      ollama serve
+      "
 
   db:
     image: postgres:15
@@ -48,7 +55,7 @@ services:
     image: nginx:latest
     container_name: nginx-proxy
     volumes:
-      - /etc/nginx/sites-available/tenderhack.conf:/etc/nginx/conf.d/default.conf  # Ваша оригинальная конфигурация
+      - /etc/nginx/sites-available/tenderhack.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "80:80"
     depends_on:
