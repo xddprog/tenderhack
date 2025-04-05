@@ -5,7 +5,7 @@ services:
     image: ollama/ollama:latest
     container_name: ollama
     ports:
-      - "11434:11434"  # Основной порт Ollama
+      - "11435:11434"  # Основной порт Ollama
     volumes:
       - ./ollama_data:/root/.ollama  # Для хранения моделей
     networks:
