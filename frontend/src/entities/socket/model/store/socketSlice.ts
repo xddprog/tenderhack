@@ -47,6 +47,7 @@ export const socketSlice = createSliceWithThunks({
           state.error = "";
         },
         fulfilled: (state, { payload }: PayloadAction<WebSocket>) => {
+          console.log(payload);
           return {
             ...state,
             socket: payload,
@@ -57,6 +58,11 @@ export const socketSlice = createSliceWithThunks({
           state.error = "No connection";
           state.isConnected = false;
         },
+      }
+    ),
+    setWebSocket: create.reducer(
+      (state, { payload }: PayloadAction<WebSocket>) => {
+        state.socket = payload;
       }
     ),
   }),

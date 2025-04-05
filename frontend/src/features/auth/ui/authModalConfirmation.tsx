@@ -30,7 +30,7 @@ export const AuthModalConfirmation = () => {
     <Dialog open={isOpen} onOpenChange={handleOnClose}>
       <DialogContent
         style={{ borderRadius: "20px" }}
-        className="bg-zinc-900 text-white border border-zinc-800 rounded-2xl shadow-2xl mx-auto overflow-hidden space-y-2"
+        className="bg-zinc-900 text-white border outline-none ring-0 border-zinc-800 rounded-2xl shadow-2xl mx-auto overflow-hidden space-y-2"
       >
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">

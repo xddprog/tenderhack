@@ -19,6 +19,14 @@ export const messageSlice = createSlice({
         state.messages.push(payload);
       }
     ),
+    resetMessage: create.reducer((state, { payload }) => {
+      state.messages = [];
+    }),
+    setChatMessages: create.reducer(
+      (state, { payload }: PayloadAction<Array<IMessage>>) => {
+        state.messages = payload;
+      }
+    ),
   }),
 }).injectInto(rootReducer);
 

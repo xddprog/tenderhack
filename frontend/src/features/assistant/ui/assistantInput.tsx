@@ -41,7 +41,7 @@ export const AssistantInput = () => {
           value={message}
           onKeyDown={handleKeyDown}
           onChange={handleChangeMessage}
-          placeholder="Tell us a little bit about yourself"
+          placeholder="О чем хотите спросить?"
           className="resize-none text-white"
         />
 

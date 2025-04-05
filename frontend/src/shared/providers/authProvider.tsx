@@ -17,7 +17,7 @@ export const AuthProvider = () => {
     const accessToken = getAccessToken();
     if (!checkPermanent && !accessToken) {
       setOpen({ type: EModalVariables.CONFIRMATION, isOpen: true });
-    } else {
+    } else if (accessToken) {
       getCurrentUser();
     }
   }, []);

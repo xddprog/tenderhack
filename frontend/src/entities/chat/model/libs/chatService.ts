@@ -1,5 +1,6 @@
 import { axiosAuth } from "@/shared/api/baseQueryInstanse";
 import { IHistoryChats } from "../../types/types";
+import { IMessage } from "@/entities/message/types/types";
 
 class ChatService {
   private static instance: ChatService;
@@ -23,8 +24,15 @@ class ChatService {
     return data;
   }
 
-  public async getChatMessage({ chatId }: { chatId: string }) {
-    return await axiosAuth.get(`${chatId}/messages`);
+  public async getChatMessage({
+    chatId,
+  }: {
+    chatId: string;
+  }): Promise<Array<IMessage>> {
+    const { data } = await axiosAuth.get<Array<IMessage>>(
+      `chat/${chatId}/messages`
+    );
+    return data;
   }
 }
 

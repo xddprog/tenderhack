@@ -1,8 +1,10 @@
 import { setNewChat } from "@/entities/chat/model/libs/chatService";
+import { chatSelectors } from "@/entities/chat/model/store/chatSlice";
 import { messageSelectors } from "@/entities/message/models/store/messageSlice";
 import { IMessage } from "@/entities/message/types/types";
 import { socketSelectors } from "@/entities/socket/model/store/socketSlice";
 import { getAccessToken } from "@/entities/token/libs/tokenService";
+import { userSelectors } from "@/entities/user/models/store/userSlice";
 import { useActions } from "@/shared/hooks/useActions";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { useTransition } from "react";
@@ -10,30 +12,49 @@ import { useTransition } from "react";
 export const useSendMessage = () => {
   const socket = useAppSelector(socketSelectors.socket);
   const messages = useAppSelector(messageSelectors.messages);
-  const { setCurrentChatId, connectionSocket } = useActions();
+  const currentChatId = useAppSelector(chatSelectors.currentChatId);
+  //обработать случай без реги юзера
+  const { setCurrentChatId, setWebSocket } = useActions();
 
   const [isPending, startTransition] = useTransition();
 
   const handleSendNewMessage = async ({
     content,
   }: {
-    content: IMessage["content"];
+    content: IMessage["text"];
   }) => {
     startTransition(async () => {
+      let currentSocket: WebSocket | null = null;
+      let chatId = currentChatId;
+
       if (!messages.length) {
         const newChat = await setNewChat();
-        setCurrentChatId(newChat.id);
-        connectionSocket({
-          url: `chat/${newChat.id}?access_token=${getAccessToken()}`,
-        });
-      }
+        chatId = newChat.id;
+        currentSocket = new WebSocket(
+          `${process.env.NEXT_PUBLIC_WS_BASE_URL}${`chat/${
+            newChat.id
+          }?access_token=${getAccessToken()}`}`
+        );
 
-      if (socket) {
-        socket.send(JSON.stringify({ content }));
+        currentSocket.onopen = () => {
+          if (currentSocket) {
+            setWebSocket(currentSocket);
+            currentSocket!.send(JSON.stringify({ content }));
+          }
+        };
+
+        currentSocket.onerror = (error) => {
+          console.error("WebSocket error:", error);
+        };
+
+        setCurrentChatId(chatId);
+      } else {
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          socket.send(JSON.stringify({ content }));
+        }
       }
     });
   };
-
   return {
     isPending,
     handleSendNewMessage,

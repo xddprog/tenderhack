@@ -7,6 +7,7 @@ import { useLoginMutate } from "../hooks/useLoginMutate";
 import { AuthFormWrapper } from "./authFormWrapper";
 import { CircleAlert } from "lucide-react";
 import clsx from "clsx";
+import { ELocalStorageKeys } from "@/shared/libs/localStorageKeys";
 
 type AuthType = "confirm" | "auth" | "register";
 
@@ -92,6 +93,7 @@ export const AuthForm: FC<IAuthForm> = ({ handlePermanent }) => {
           onSuccess: () => setClose(false),
         });
       }
+      localStorage.removeItem(ELocalStorageKeys.PERMANENT_AUTH);
     } catch (error) {
       setErrors({
         general: "Произошла непредвиденная ошибка",
