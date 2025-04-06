@@ -28,7 +28,7 @@ class RequestProvider(Provider):
     async def get_user_service(self, session: AsyncSession) -> services.UserService:    
         return services.UserService(repository=repositories.UserRepository(session))
     
-    @provide(scope=Scope.REQUEST)
+    @provide(scope=Scope.SESSION)
     async def get_chat_service(self, session: AsyncSession) -> services.ChatService:
         return services.ChatService(repository=repositories.ChatRepository(session))
     
