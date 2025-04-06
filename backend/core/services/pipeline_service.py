@@ -1,8 +1,8 @@
+from typing import Awaitable
 import aiohttp
 from fastapi import WebSocket
-from langchain.vectorstores import FAISS
-from langchain.embeddings import HuggingFaceEmbeddings
-import requests
+from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
 import json
 
 from backend.infrastructure.config.database_configs import FAISS_CONFIG
@@ -32,13 +32,13 @@ class PipelineService:
         relevant_chunks = chunk_vector_store.similarity_search(query, k=top_k, filter=filter_dict)
         return [doc.page_content for doc in relevant_chunks]
 
-    async def local_model_call(self, user_prompt, retrieved_chunks, websocket: WebSocket):
+    async def local_model_call(self, user_prompt, retrieved_chunks, websocket: WebSocket, message_id: int):
         # Create the prompt with the user's request
         context = "\n".join(retrieved_chunks)
         
         prompt = f"""
 Ты - ассистент по поиску информации в данных. Используй следующий контекст для ответа на вопрос пользователя.
-Если ты считаешь, что контекста недостаточно для формирования ответа, ответь что не можешь помочь в решении данного вопоса
+Если ты считаешь, что контекста недостаточно для формирования ответа, ответь что не можешь помочь в решении данного вопроса и сообщи номер + 7(777) 777-52-42 для связи с технической поддержкой.
 Контекст:
 {context}
 
@@ -48,17 +48,18 @@ class PipelineService:
 Ответ:
 """
         # Define the Ollama API endpoint
-        url = "http://localhost:11434/api/generate"
+        url = "http://ollama:11434/api/generate"
         
         # Prepare the request payload
         data = {
             "model": "yandex/YandexGPT-5-Lite-8B-instruct-GGUF:latest",
-            "prompt": prompt
+            "prompt": prompt,
+            "stream": True
         }
         
         # Send the request to Ollama API with streaming enabled
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=data, headers={"Content-Type": "application/json"}) as response:
+            async with session.post(url, json=data, headers={"Content-Type": "application/json"}, ssl=False) as response:
                 search_query = ""
                 async for line in response.content:
                     if line:
@@ -68,7 +69,10 @@ class PipelineService:
                             search_query += chunk
                             await websocket.send_json({
                                 "event": ChatEvents.GPT.value,
-                                "data": {"text": chunk}
+                                "data": {
+                                    "text": chunk, 
+                                    "id": message_id
+                                }
                             })
                         if json_response.get("done", False):
                             await websocket.send_json({
@@ -76,8 +80,16 @@ class PipelineService:
                                 "data": {"text": "End generating"}
                             })
                             break
+        return search_query.strip()
 
-    async def process_query(self, websocket: WebSocket, query: str, top_k_titles: int = 10, top_k_chunks: int = 5) -> str:
+    async def process_query(
+        self, 
+        websocket: WebSocket, 
+        message_id: int, 
+        query: str, 
+        top_k_titles: int = 10, 
+        top_k_chunks: int = 5
+    ) -> str:
         """Обрабатывает запрос пользователя и возвращает сгенерированный ответ."""
         # Поиск релевантных заголовков
         relevant_titles = self.title_vector_store.similarity_search(query, k=top_k_titles)
@@ -97,7 +109,7 @@ class PipelineService:
             print(f"{i}. {chunk}")
         
         # Генерация ответа
-        answer = await self.local_model_call(query, relevant_chunks, websocket)
+        answer = await self.local_model_call(query, relevant_chunks, websocket, message_id)
         print(answer)
         
         return answer

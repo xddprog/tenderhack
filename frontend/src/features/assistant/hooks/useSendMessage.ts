@@ -30,9 +30,7 @@ export const useSendMessage = () => {
         const newChat = await setNewChat();
         chatId = newChat.id;
         currentSocket = new WebSocket(
-          `${process.env.NEXT_PUBLIC_WS_BASE_URL}${`chat/${
-            newChat.id
-          }?access_token=${getAccessToken()}`}`
+          `${`ws://89.104.68.181/api/v1/chat/${newChat.id}?access_token=${getAccessToken()}`}`
         );
 
         currentSocket.onopen = () => {

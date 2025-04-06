@@ -3,10 +3,10 @@ import {
   getAccessToken,
 } from "@/entities/token/libs/tokenService";
 import axios, {
+  AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
-  AxiosError,
 } from "axios";
 import { RequestOptions } from "https";
 
@@ -125,9 +125,9 @@ export class AxiosClient {
 }
 
 export const axiosNoAuth = new AxiosClient(
-  process.env.NEXT_PUBLIC_API_BASE_URL!
+  "http://89.104.68.181/api/v1/"
 );
 export const axiosAuth = new AxiosClient(
-  process.env.NEXT_PUBLIC_API_BASE_URL!,
+  "http://89.104.68.181/api/v1/",
   true
 );

@@ -1,10 +1,10 @@
+import { rootReducer } from "@/shared/model/store";
 import {
   asyncThunkCreator,
   buildCreateSlice,
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { SocketState } from "../../types/types";
-import { rootReducer } from "@/shared/model/store";
 
 const createSliceWithThunks = buildCreateSlice({
   creators: { asyncThunk: asyncThunkCreator },
@@ -33,7 +33,7 @@ export const socketSlice = createSliceWithThunks({
       async ({ url }, { rejectWithValue }) => {
         try {
           const socket = new WebSocket(
-            `${process.env.NEXT_PUBLIC_WS_BASE_URL}${url}`
+            `${"ws://89.104.68.181/api/v1/"}${url}`
           );
 
           return socket;
