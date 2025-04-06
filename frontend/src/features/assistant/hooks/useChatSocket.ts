@@ -5,7 +5,7 @@ import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { useWebSocketEvents } from "@/shared/hooks/useSocketEvents";
 
 export const useChatSocket = () => {
-  const { setNewMessage } = useActions();
+  const { setNewMessage, toggleTyping } = useActions();
   const messages = useAppSelector(messageSelectors.messages);
 
   useWebSocketEvents(
@@ -19,8 +19,13 @@ export const useChatSocket = () => {
     "gptMessage",
     ({ data }: { data: IMessage; event: string }) => {
       setNewMessage(data);
+      toggleTyping(true);
     }
   );
+
+  useWebSocketEvents("gptMessageEnd", () => {
+    toggleTyping(false);
+  });
 
   return {
     messages,
