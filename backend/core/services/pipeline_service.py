@@ -33,7 +33,7 @@ class PipelineService:
         return [doc.page_content for doc in relevant_chunks]
 
     async def local_model_call(self, user_prompt, retrieved_chunks, websocket: WebSocket, message_id: int):
-        # Create the prompt with the user's request
+        
         context = "\n".join(retrieved_chunks)
         
         prompt = f"""
@@ -107,7 +107,25 @@ class PipelineService:
         print("Нашли:")
         for i, chunk in enumerate(relevant_chunks, 1):
             print(f"{i}. {chunk}")
+
+        vec_db_names = [
+            'Инструкция_по_работе_с_Порталом_для_заказчика',
+            'Инструкция_по_работе_с_Порталом_для_поставщика',
+            'Инструкция_по_электронному_актированию',
+            'Регламент_информационного_взаимодействия'
+        ]
+        chunk_vec_pdf_store = [FAISS.load_local(path, 
+                                        self.embeddings, 
+                                        allow_dangerous_deserialization=True) for path in vec_db_names]
         
+        pdf_chunks = [vec.similarity_search(query, k=3) for vec in chunk_vec_pdf_store]
+
+        for chunks in pdf_chunks:
+            relevant_chunks.extend([doc.page_content for doc in chunks])
+
+        for i, chunk in enumerate(relevant_chunks, 1):
+            print(f"{i}. {chunk}")
+            
         # Генерация ответа
         answer = await self.local_model_call(query, relevant_chunks, websocket, message_id)
         print(answer)

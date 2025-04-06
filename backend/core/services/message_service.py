@@ -22,3 +22,7 @@ class MessageService(BaseDbModelService[Message]):
             from_user=from_user
         )
         return MessageModel.model_validate(message, from_attributes=True)
+    
+    async def like_or_dislike_message(self, message_id: int, like_or_dislike: bool):
+        message = await self.update(message_id, liked=like_or_dislike)
+        return MessageModel.model_validate(message, from_attributes=True)
