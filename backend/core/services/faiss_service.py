@@ -31,10 +31,8 @@ class FaissService:
             for path in pdf_filepath_list
         ]
         loader_list = [PDFPlumberLoader(path) for path in pdf_filepath_list]
-        [print(loader) for loader in loader_list]
 
         documents = [loader.load() for loader in loader_list]
-        [print(doc) for doc in documents]
 
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
         pdf_dict = {i: filename for i, filename in enumerate(pdf_filepath_list)}

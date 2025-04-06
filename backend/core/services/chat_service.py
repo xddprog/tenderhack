@@ -12,7 +12,7 @@ class ChatService(BaseDbModelService[Chat]):
         return [ChatModel.model_validate(chat, from_attributes=True) for chat in chats]
     
     async def create(self, user_id: int) -> ChatModel:
-        new_chat = await super().create(user_id=user_id, title="SexySwaga")
+        new_chat = await super().create(user_id=user_id, title=None)
         return ChatModel.model_validate(new_chat, from_attributes=True)
     
     async def update(self, item_id: int, **kwargs: str | int):
