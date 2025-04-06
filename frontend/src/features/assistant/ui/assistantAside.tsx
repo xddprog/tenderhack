@@ -12,6 +12,7 @@ import { ELocalStorageKeys } from "@/shared/libs/localStorageKeys";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, LayoutDashboard, LogOut } from "lucide-react";
+import { AiLogo } from "@/shared/assets/aiLogo";
 
 interface IAssistantAside {
   classname?: string;
@@ -53,13 +54,7 @@ export const AssistantAside: FC<IAssistantAside> = ({
     >
       <div className="flex flex-col h-full">
         <div className="md:px-4 pl-3 md:pl-5 md:pt-6  text-xl font-semibold">
-          <Image
-            src={"/image/МАЛЮТИНAI.png"}
-            alt="logo-company"
-            className="cursor-pointer"
-            width={163}
-            height={36}
-          />
+          <AiLogo />
         </div>
 
         <ScrollArea className="flex-1 md:px-2 pb-4 space-y-5">
