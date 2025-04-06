@@ -12,7 +12,7 @@ router = APIRouter()
 @inject
 async def like_or_dislike_message(
     message_id: int,
+    message_service: FromDishka[services.MessageService],
     like_or_dislike: bool | None = None,
-    message_service: FromDishka[services.MessageService]
 ):
     return await message_service.like_or_dislike_message(message_id, like_or_dislike)
