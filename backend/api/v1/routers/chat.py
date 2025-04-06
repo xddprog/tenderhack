@@ -54,12 +54,18 @@ async def connect_chat(
 ):
     try:
         await manager.connect(chat_id, websocket)
+        
+        try:
+            chat_id = int(chat_id) if str(chat_id).isdigit() else None
+        except (ValueError, TypeError):
+            chat_id = None
+
         user = None
         title = None
         chat = None
         if access_token:
             user = await auth_service.verify_token(access_token)
-        if isinstance(chat_id, int):
+        if chat_id:
             chat = await chat_service.get_one(chat_id)
             title = deepcopy(chat.title)
         message_id = 1
@@ -85,8 +91,7 @@ async def connect_chat(
             if user:
                 await message_service.update(message.id, text=generated_message)
 
-            if not title and chat:
-                print("generate title")
+            if not title and chat:               
                 generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
                 chat = await chat_service.update(int(chat_id), title=generated_title)
                 await manager.broadcast(int(chat_id), chat, ChatEvents.CHAT_TITLE)
