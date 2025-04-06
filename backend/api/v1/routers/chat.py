@@ -7,6 +7,7 @@ from dishka import FromDishka
 from dishka.integrations.fastapi import inject
 from fastapi import Depends, HTTPException, WebSocket
 from fastapi.routing import APIRouter
+from numpy.char import isdigit
 
 from backend.api.dependency.providers.request import get_current_user_dependency
 from backend.core import services
@@ -58,9 +59,11 @@ async def connect_chat(
         chat = None
         if access_token:
             user = await auth_service.verify_token(access_token)
-        if isinstance(chat_id, int):
+        if isinstance(chat_id, str) and not chat_id.isdigit():
             chat = await chat_service.get_one(chat_id)
             title = deepcopy(chat.title)
+        else:
+            chat_id = int(chat_id)
         message_id = 1
         
         while True:
@@ -80,11 +83,7 @@ async def connect_chat(
                 message = MessageModel(id=message_id, text="processing", from_user=False, created_at=datetime.now())
                 message_id += 1
 
-            generated_message = await pipeline_service.process_query(
-                websocket, 
-                message.id, 
-                user_input, 
-            )
+            generated_message = await pipeline_service.process_query(websocket, message.id, user_input)
             if user:
                 await message_service.update(message.id, text=generated_message)
 
