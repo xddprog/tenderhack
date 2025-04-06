@@ -7,6 +7,7 @@ class MessageModel(BaseModel):
     text: str
     from_user: bool 
     created_at: datetime | str
+    liked: bool | None = None
 
     @field_validator("created_at")
     def validate_created_at(cls, value):
