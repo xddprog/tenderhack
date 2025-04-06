@@ -1,5 +1,6 @@
 import asyncio
 from copy import deepcopy
+from datetime import datetime
 import json
 from typing import Annotated
 from dishka import FromDishka
@@ -67,14 +68,14 @@ async def connect_chat(
             if user:
                 message = await message_service.create(user_input, user.id, chat_id, from_user=True)
             else:
-                message = MessageModel(id=message_id, text=user_input, from_user=True)
+                message = MessageModel(id=message_id, text=user_input, from_user=True, created_at=datetime.now())
                 message_id += 1
             await manager.broadcast(chat_id, message, ChatEvents.USER)
                             
             if user:
                 message = await message_service.create("processing", user.id, chat_id, from_user=False)
             else:
-                message = MessageModel(id=message_id, text="processing", from_user=False)
+                message = MessageModel(id=message_id, text="processing", from_user=False, created_at=datetime.now())
                 message_id += 1
 
             generated_message = await pipeline_service.process_query(
