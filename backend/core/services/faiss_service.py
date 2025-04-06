@@ -27,7 +27,7 @@ class FaissService:
             'Регламент_информационного_взаимодействия.pdf'
         ]
         pdf_filepath_list = [
-            Path(__file__).resolve().parent.parent.parent  / "utils" /"faiss_data" / path 
+            str(Path(__file__).resolve().parent.parent.parent  / "utils" /"faiss_data" / path)
             for path in pdf_filepath_list
         ]
         loader_list = [PDFPlumberLoader(path) for path in pdf_filepath_list]
@@ -35,7 +35,7 @@ class FaissService:
 
         documents = [loader.load() for loader in loader_list]
         [print(doc) for doc in documents]
-        
+
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
         pdf_dict = {i: filename for i, filename in enumerate(pdf_filepath_list)}
         chuncks_list = [text_splitter.split_documents(doc) for doc in documents]
