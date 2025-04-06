@@ -15,6 +15,7 @@ import {
 import React, { FC, useCallback } from "react";
 import { useMessageReaction } from "../hooks/useMessageReaction";
 import { useActions } from "@/shared/hooks/useActions";
+import { getAccessToken } from "@/entities/token/libs/tokenService";
 
 interface IAssistantMessageItem {
   message: IMessage;
@@ -31,17 +32,19 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
     (event: React.MouseEvent<HTMLButtonElement>) => {
       const reactionType = event.currentTarget.value as "like" | "dislike";
       let likeVal: boolean | null = null;
-
+      const access = getAccessToken();
       if (reactionType === "like") {
         likeVal = message.liked !== true;
       } else if (reactionType === "dislike") {
         likeVal = message.liked !== false ? false : null;
       }
+      if (access) {
+        mutate({
+          messageId: message.id,
+          liked: likeVal,
+        });
+      }
 
-      mutate({
-        messageId: message.id,
-        liked: likeVal,
-      });
       toggleReaction({
         id: message.id,
         liked: likeVal,

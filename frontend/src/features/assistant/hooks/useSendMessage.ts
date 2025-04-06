@@ -67,7 +67,7 @@ export const useSendMessage = () => {
       let currentSocket: WebSocket | null = null;
 
       if (!messages.length) {
-        const uuid = Math.random();
+        const uuid = "randomUUI";
         currentSocket = new WebSocket(
           `${`ws://89.104.68.181/api/v1/chat/${uuid}`}`
         );

@@ -35,15 +35,15 @@ export const AssistantMessageList: FC<IAssistantMessageList> = ({
                 <div className="flex items-center space-x-2">
                   <div className="flex space-x-1">
                     <div
-                      className="h-2 w-2 bg-blue-400 rounded-full animate-bounce"
+                      className="h-1.5 w-1.5 bg-blue-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0ms" }}
                     />
                     <div
-                      className="h-2 w-2 bg-blue-400 rounded-full animate-bounce"
+                      className="h-1.5 w-1.5 bg-blue-400 rounded-full animate-bounce"
                       style={{ animationDelay: "150ms" }}
                     />
                     <div
-                      className="h-2 w-2 bg-blue-400 rounded-full animate-bounce"
+                      className="h-1.5 w-1.5 bg-blue-400 rounded-full animate-bounce"
                       style={{ animationDelay: "300ms" }}
                     />
                   </div>

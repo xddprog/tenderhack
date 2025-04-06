@@ -54,7 +54,7 @@ export const AssistantAside: FC<IAssistantAside> = ({
       <div className="flex flex-col h-full">
         <div className="md:px-4 pl-3 md:pl-5 md:pt-6  text-xl font-semibold">
           <Image
-            src={"/image/logo.png"}
+            src={"/image/МАЛЮТИНAI.png"}
             alt="logo-company"
             className="cursor-pointer"
             width={163}

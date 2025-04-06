@@ -24,7 +24,7 @@ interface FormErrors {
 export const AuthForm: FC<IAuthForm> = ({ handlePermanent }) => {
   const [authType, setAuthType] = useState<AuthType>("confirm");
   const [errors, setErrors] = useState<FormErrors>({});
-  const { setClose } = useActions();
+  const { setClose, resetMessage } = useActions();
 
   const { mutate: registerMutate, isRegisterPending } = useRegisterMutate();
   const { mutate: loginMutate, isLoginPending } = useLoginMutate();
@@ -93,6 +93,7 @@ export const AuthForm: FC<IAuthForm> = ({ handlePermanent }) => {
           onSuccess: () => setClose(false),
         });
       }
+      resetMessage();
       localStorage.removeItem(ELocalStorageKeys.PERMANENT_AUTH);
     } catch (error) {
       setErrors({
