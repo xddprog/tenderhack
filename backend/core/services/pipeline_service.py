@@ -115,9 +115,9 @@ class PipelineService:
             'Инструкция_по_электронному_актированию',
             'Регламент_информационного_взаимодействия'
         ]
-        pdf_filepath_list = [
+        vec_db_names = [
             str(Path(__file__).resolve().parent.parent.parent  / "utils" / path)          
-            for path in pdf_filepath_list
+            for path in vec_db_names
         ]
         chunk_vec_pdf_store = [FAISS.load_local(path, 
                                         self.embeddings, 
