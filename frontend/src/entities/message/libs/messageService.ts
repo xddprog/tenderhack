@@ -19,7 +19,7 @@ class MessageService {
     messageId: number;
     liked: boolean | null;
   }) {
-    const { data } = await axiosAuth.post<Array<IMessage>>(
+    const { data } = await axiosAuth.patch<Array<IMessage>>(
       `message/${messageId}?like_or_dislike=${liked}`
     );
     return data;
