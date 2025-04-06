@@ -12,7 +12,9 @@ import {
   ThumbsUp,
   Wand2,
 } from "lucide-react";
-import React, { FC } from "react";
+import React, { FC, useCallback } from "react";
+import { useMessageReaction } from "../hooks/useMessageReaction";
+import { useActions } from "@/shared/hooks/useActions";
 
 interface IAssistantMessageItem {
   message: IMessage;
@@ -20,7 +22,32 @@ interface IAssistantMessageItem {
 
 const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
   const { handleCopyClick, isCopied, isPending } = useCopied();
+  const { toggleReaction } = useActions();
+  const { mutate, isPending: isPendingMessage } = useMessageReaction();
   const isTyping = useAppSelector(messageSelectors.isTyping) === message.id;
+
+  const handleReaction = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      const reactionType = event.currentTarget.value as "like" | "dislike";
+      let likeVal: boolean | null = null;
+
+      if (reactionType === "like") {
+        likeVal = message.liked !== true;
+      } else if (reactionType === "dislike") {
+        likeVal = message.liked !== false ? false : null;
+      }
+
+      mutate({
+        messageId: message.id,
+        liked: likeVal,
+      });
+      toggleReaction({
+        id: message.id,
+        liked: likeVal,
+      });
+    },
+    []
+  );
 
   return (
     <div
@@ -100,16 +127,32 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
               {!message.from_user && (
                 <>
                   <button
+                    value={"like"}
+                    disabled={isPendingMessage}
                     aria-label="Лайк"
                     className="p-1 rounded-full opacity-0 group-hover:opacity-100 hover:bg-white/10 active:scale-90"
+                    onClick={handleReaction}
                   >
-                    <ThumbsUp className="h-3 w-3" />
+                    <ThumbsUp
+                      className={clsx(
+                        "h-3 w-3",
+                        message.liked && "bg-blue-400"
+                      )}
+                    />
                   </button>
                   <button
+                    value={`dislike`}
+                    disabled={isPendingMessage}
                     aria-label="Дизлайк"
                     className="p-1 rounded-full opacity-0 group-hover:opacity-100 hover:bg-white/10 active:scale-90"
+                    onClick={handleReaction}
                   >
-                    <ThumbsDown className="h-3 w-3" />
+                    <ThumbsDown
+                      className={clsx(
+                        "h-3 w-3",
+                        message.liked === false && "bg-blue-400"
+                      )}
+                    />
                   </button>
                 </>
               )}

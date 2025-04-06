@@ -52,6 +52,26 @@ export const messageSlice = createSlice({
         state.messages = payload;
       }
     ),
+    toggleReaction: create.reducer(
+      (
+        state,
+        { payload }: PayloadAction<{ id: number; liked: boolean | null }>
+      ) => {
+        const messageIndex = state.messages.findIndex(
+          (message) => message.id === payload.id
+        );
+
+        if (messageIndex !== -1) {
+          const updatedMessages = [...state.messages];
+          const existingMessage = updatedMessages[messageIndex];
+
+          updatedMessages[messageIndex] = {
+            ...existingMessage,
+            liked: payload.liked,
+          };
+        }
+      }
+    ),
   }),
 }).injectInto(rootReducer);
 

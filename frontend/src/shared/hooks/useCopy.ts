@@ -13,7 +13,9 @@ export const useCopied = () => {
       try {
         const textToCopy = event.currentTarget.value;
         if (!textToCopy) throw new Error("Is empty copy value!");
-
+        if (!navigator.clipboard) {
+          throw new Error("Clipboard API not available");
+        }
         await navigator.clipboard.writeText(textToCopy);
         setIsCopied(true);
         setTimeout(() => setIsCopied(false), 2000);

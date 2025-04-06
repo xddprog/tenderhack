@@ -3,4 +3,5 @@ export interface IMessage {
   from_user: boolean;
   id: number;
   text: string;
+  liked: boolean | null;
 }
