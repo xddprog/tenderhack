@@ -52,28 +52,26 @@ async def connect_chat(
     try:
         await manager.connect(chat_id, websocket)
         user = await auth_service.verify_token(access_token)
-        lock = asyncio.Lock()
-        chat = await chat_service.get_one(chat_id)
         
         while True:
-            async with lock: 
-                user_input = await websocket.receive_json()
-                user_input = user_input["content"]
+            chat = await chat_service.get_one(chat_id)
+            user_input = await websocket.receive_json()
+            user_input = user_input["content"]
 
-                message = await message_service.create(user_input, user.id, chat_id, from_user=True)
-                await manager.broadcast(chat_id, message, ChatEvents.USER)
-                                
-                message = await message_service.create("processing", user.id, chat_id, from_user=False)
-                generated_message = await pipeline_service.process_query(
-                    websocket, 
-                    message.id, 
-                    user_input, 
-                )
+            message = await message_service.create(user_input, user.id, chat_id, from_user=True)
+            await manager.broadcast(chat_id, message, ChatEvents.USER)
+                            
+            message = await message_service.create("processing", user.id, chat_id, from_user=False)
+            generated_message = await pipeline_service.process_query(
+                websocket, 
+                message.id, 
+                user_input, 
+            )
 
-                if not chat.title:
-                    generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
-                    chat = await chat_service.update(chat.id, title=generated_title)
-                    await manager.broadcast(chat_id, chat, ChatEvents.TITLE)
+            if not chat.title:
+                generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
+                chat = await chat_service.update(chat.id, title=generated_title)
+                await manager.broadcast(chat_id, chat, ChatEvents.TITLE)
 
     except HTTPException as e:
         await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code), event=ChatEvents.ERROR)
