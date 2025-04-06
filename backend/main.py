@@ -22,7 +22,7 @@ def create_lifespan(di_container: AsyncContainer):
         # albert.train_model()
         # albert.save_model_and_data()
 
-        await db.create_tables()
+        # await db.create_tables()
         # FaissService.create_and_save_vector_db()
         # print(faiss.search({
         #     "distances": [0.12, 0.45],
