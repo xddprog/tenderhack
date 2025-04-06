@@ -42,19 +42,19 @@ async def create_chat(
 @inject
 async def connect_chat(
     websocket: WebSocket,
+    chat_id: int | str,
     message_service: FromDishka[services.MessageService],
     auth_service: FromDishka[services.AuthService],
     manager: FromDishka[WebSocketManager],
     pipeline_service: FromDishka[services.PipelineService],
     chat_service: FromDishka[services.ChatService],
     access_token: str | None = None,
-    chat_id: int | str | None = None,
 ):
     try:
         await manager.connect(chat_id, websocket)
         if access_token:
             user = await auth_service.verify_token(access_token)
-        if chat_id:
+        if isinstance(chat_id, int):
             chat = await chat_service.get_one(chat_id)
             title = deepcopy(chat.title)
         message_id = 1
