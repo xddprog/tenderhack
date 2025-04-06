@@ -50,7 +50,7 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
     [message]
   );
 
-  if (isLoadingRepeat) {
+  if (isLoadingRepeat && !message.from_user) {
     return (
       <div className="flex w-full items-start gap-2 mb-3 justify-start">
         <div className="flex-shrink-0 pt-1">
