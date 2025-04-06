@@ -62,8 +62,6 @@ async def connect_chat(
         if isinstance(chat_id, int):
             chat = await chat_service.get_one(chat_id)
             title = deepcopy(chat.title)
-        else:
-            chat_id = int(chat_id)
         message_id = 1
         
         while True:
