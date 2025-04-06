@@ -5,7 +5,7 @@ import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { useWebSocketEvents } from "@/shared/hooks/useSocketEvents";
 
 export const useChatSocket = () => {
-  const { setNewMessage, toggleTyping } = useActions();
+  const { setNewMessage, toggleTyping, setIsLoadingRepeat } = useActions();
   const messages = useAppSelector(messageSelectors.messages);
 
   useWebSocketEvents(
@@ -20,6 +20,7 @@ export const useChatSocket = () => {
     ({ data }: { data: IMessage; event: string }) => {
       setNewMessage(data);
       toggleTyping(data.id);
+      setIsLoadingRepeat(false);
     }
   );
 

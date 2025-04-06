@@ -4,6 +4,7 @@ import { messageSelectors } from "@/entities/message/models/store/messageSlice";
 import { IMessage } from "@/entities/message/types/types";
 import { socketSelectors } from "@/entities/socket/model/store/socketSlice";
 import { getAccessToken } from "@/entities/token/libs/tokenService";
+import { userSelectors } from "@/entities/user/models/store/userSlice";
 import { useActions } from "@/shared/hooks/useActions";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { useTransition } from "react";
@@ -11,8 +12,9 @@ import { useTransition } from "react";
 export const useSendMessage = () => {
   const socket = useAppSelector(socketSelectors.socket);
   const messages = useAppSelector(messageSelectors.messages);
+  const currentUser = useAppSelector(userSelectors.currentUser);
   const currentChatId = useAppSelector(chatSelectors.currentChatId);
-  const { setCurrentChatId, setWebSocket } = useActions();
+  const { setCurrentChatId, setWebSocket, setIsLoadingRepeat } = useActions();
 
   const [isPending, startTransition] = useTransition();
 
@@ -38,6 +40,7 @@ export const useSendMessage = () => {
           if (currentSocket) {
             setWebSocket(currentSocket);
             currentSocket!.send(JSON.stringify({ content }));
+            setIsLoadingRepeat(true);
           }
         };
 
@@ -49,12 +52,42 @@ export const useSendMessage = () => {
       } else {
         if (socket && socket.readyState === WebSocket.OPEN) {
           socket.send(JSON.stringify({ content }));
+          setIsLoadingRepeat(true);
         }
+      }
+    });
+  };
+
+  const handleSendMesssageNoAuth = ({
+    content,
+  }: {
+    content: IMessage["text"];
+  }) => {
+    startTransition(async () => {
+      let currentSocket: WebSocket | null = null;
+
+      if (!messages.length) {
+        currentSocket = new WebSocket(`${"ws://89.104.68.181/api/v1/chat"}`);
+
+        currentSocket.onopen = () => {
+          if (currentSocket) {
+            setWebSocket(currentSocket);
+            currentSocket!.send(JSON.stringify({ content }));
+            setIsLoadingRepeat(true);
+          }
+        };
+
+        currentSocket.onerror = (error) => {
+          console.error("WebSocket error:", error);
+        };
       }
     });
   };
   return {
     isPending,
-    handleSendNewMessage,
+
+    handleSendNewMessage: currentUser
+      ? handleSendNewMessage
+      : handleSendMesssageNoAuth,
   };
 };

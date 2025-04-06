@@ -26,6 +26,11 @@ export const chatSlice = createSlice({
         state.commonChatsHistory = payload;
       }
     ),
+    setNewChatHistory: create.reducer(
+      (state, { payload }: PayloadAction<IHistoryChats>) => {
+        state.commonChatsHistory = [payload, ...state.commonChatsHistory];
+      }
+    ),
   }),
 }).injectInto(rootReducer);
 

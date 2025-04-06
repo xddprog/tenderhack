@@ -24,6 +24,7 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
   const { handleCopyClick, isCopied, isPending } = useCopied();
   const { toggleReaction } = useActions();
   const { mutate, isPending: isPendingMessage } = useMessageReaction();
+  const isLoadingRepeat = useAppSelector(messageSelectors.isLoadingRepeat);
   const isTyping = useAppSelector(messageSelectors.isTyping) === message.id;
 
   const handleReaction = useCallback(
@@ -46,8 +47,40 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
         liked: likeVal,
       });
     },
-    []
+    [message]
   );
+
+  if (isLoadingRepeat) {
+    return (
+      <div className="flex w-full items-start gap-2 mb-3 justify-start">
+        <div className="flex-shrink-0 pt-1">
+          <Bot className="h-5 w-5 text-blue-400" />
+        </div>
+
+        <div className="max-w-[70%] min-w-[20%] px-4 py-3 rounded-2xl bg-[#262626] text-white shadow-lg">
+          <div className="flex items-center space-x-2">
+            <div className="flex space-x-1">
+              <div
+                className="h-2 w-2 bg-blue-400 rounded-full animate-bounce"
+                style={{ animationDelay: "0ms" }}
+              />
+              <div
+                className="h-2 w-2 bg-blue-400 rounded-full animate-bounce"
+                style={{ animationDelay: "150ms" }}
+              />
+              <div
+                className="h-2 w-2 bg-blue-400 rounded-full animate-bounce"
+                style={{ animationDelay: "300ms" }}
+              />
+            </div>
+            <span className="text-sm text-blue-400">
+              Модель генерирует ответ...
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

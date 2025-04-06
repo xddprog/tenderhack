@@ -6,6 +6,7 @@ import { IMessageSlice } from "../types/types";
 const initialState: IMessageSlice = {
   messages: [],
   isTyping: null,
+  isLoadingRepeat: false,
 };
 
 export const messageSlice = createSlice({
@@ -14,6 +15,7 @@ export const messageSlice = createSlice({
   selectors: {
     messages: (state) => state.messages,
     isTyping: (state) => state.isTyping,
+    isLoadingRepeat: (state) => state.isLoadingRepeat,
   },
   reducers: (create) => ({
     setNewMessage: create.reducer(
@@ -50,6 +52,11 @@ export const messageSlice = createSlice({
     setChatMessages: create.reducer(
       (state, { payload }: PayloadAction<Array<IMessage>>) => {
         state.messages = payload;
+      }
+    ),
+    setIsLoadingRepeat: create.reducer(
+      (state, { payload }: PayloadAction<boolean>) => {
+        state.isLoadingRepeat = payload;
       }
     ),
     toggleReaction: create.reducer(
