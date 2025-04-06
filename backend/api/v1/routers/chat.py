@@ -66,7 +66,6 @@ async def connect_chat(
                     websocket, 
                     message.id, 
                     user_input, 
-                    message_service.update,
                 )
 
     except HTTPException as e:
