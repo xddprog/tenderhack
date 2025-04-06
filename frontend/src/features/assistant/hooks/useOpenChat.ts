@@ -1,6 +1,5 @@
 import { getChatMessage } from "@/entities/chat/model/libs/chatService";
 import { useActions } from "@/shared/hooks/useActions";
-
 import { getAccessToken } from "@/entities/token/libs/tokenService";
 
 export const useOpenChat = () => {

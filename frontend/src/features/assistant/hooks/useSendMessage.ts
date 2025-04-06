@@ -4,7 +4,6 @@ import { messageSelectors } from "@/entities/message/models/store/messageSlice";
 import { IMessage } from "@/entities/message/types/types";
 import { socketSelectors } from "@/entities/socket/model/store/socketSlice";
 import { getAccessToken } from "@/entities/token/libs/tokenService";
-import { userSelectors } from "@/entities/user/models/store/userSlice";
 import { useActions } from "@/shared/hooks/useActions";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { useTransition } from "react";

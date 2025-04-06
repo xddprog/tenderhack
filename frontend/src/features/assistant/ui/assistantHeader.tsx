@@ -55,13 +55,17 @@ export const AssistantHeader = () => {
             {" "}
             {currentUser?.email.split("@")[0]}
           </h2>
-          <div className="bg-zinc-800/70 p-1.5 rounded-full cursor-pointer">
+          <div className="bg-neutral-800 p-1.5 rounded-full cursor-pointer">
             <User2Icon className="text-zinc-400" />
           </div>
         </div>
       )}
       {!currentUser && (
-        <Button variant={"ghost"} className="bg-white" onClick={handleOpen}>
+        <Button
+          variant={"ghost"}
+          className="bg-white rounded-xl"
+          onClick={handleOpen}
+        >
           Войти
         </Button>
       )}

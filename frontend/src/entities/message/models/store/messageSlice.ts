@@ -16,10 +16,28 @@ export const messageSlice = createSlice({
   reducers: (create) => ({
     setNewMessage: create.reducer(
       (state, { payload }: PayloadAction<IMessage>) => {
-        state.messages.push(payload);
+        if (!payload?.id || !payload.text) return;
+
+        const messageIndex = state.messages.findIndex(
+          (message) => message.id === payload.id
+        );
+
+        if (messageIndex !== -1) {
+          const updatedMessages = [...state.messages];
+          const existingMessage = updatedMessages[messageIndex];
+
+          updatedMessages[messageIndex] = {
+            ...existingMessage,
+            text: `${existingMessage.text}${payload.text}`.trim(),
+          };
+
+          state.messages = updatedMessages;
+        } else {
+          state.messages = [...state.messages, payload];
+        }
       }
     ),
-    resetMessage: create.reducer((state, { payload }) => {
+    resetMessage: create.reducer((state) => {
       state.messages = [];
     }),
     setChatMessages: create.reducer(
