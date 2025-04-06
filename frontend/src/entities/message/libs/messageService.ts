@@ -20,7 +20,7 @@ class MessageService {
     liked: boolean | null;
   }) {
     const { data } = await axiosAuth.post<Array<IMessage>>(
-      `messages/${messageId}?like_or_dislike=${liked}`
+      `message/${messageId}?like_or_dislike=${liked}`
     );
     return data;
   }
