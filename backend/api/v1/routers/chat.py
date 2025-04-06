@@ -86,9 +86,11 @@ async def connect_chat(
                 await message_service.update(message.id, text=generated_message)
 
             if not title and chat:
+                print("generate title")
                 generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
                 chat = await chat_service.update(int(chat_id), title=generated_title)
                 await manager.broadcast(int(chat_id), chat, ChatEvents.CHAT_TITLE)
+                title = chat.title
 
     except HTTPException as e:
         await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code), event=ChatEvents.ERROR)
