@@ -182,7 +182,7 @@ export const AuthForm: FC<IAuthForm> = ({ handlePermanent }) => {
           >
             {authType === "auth" ? "Войти" : "Зарегистрироваться"}
           </Button>
-          <p className="text-center">
+          <p className="text-center md:text-base text-xs">
             Или{" "}
             <button
               type="button"

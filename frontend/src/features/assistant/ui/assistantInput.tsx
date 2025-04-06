@@ -36,7 +36,7 @@ export const AssistantInput = () => {
 
   return (
     <div className="px-4 pb-6 pt-0 max-w-3xl mx-auto w-full">
-      <div className="relative flex items-center rounded-2xl border bg-white dark:bg-zinc-800 shadow-sm dark:border-zinc-700 focus-within:ring-1 focus-within:ring-blue-500">
+      <div className="relative flex items-center rounded-2xl border bg-white bg-zinc-800 shadow-sm border-zinc-700 focus-within:ring-1 focus-within:ring-blue-500">
         <Textarea
           value={message}
           onKeyDown={handleKeyDown}

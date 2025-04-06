@@ -36,7 +36,7 @@ export const AuthModalConfirmation = () => {
           <DialogTitle className="text-2xl text-center font-bold">
             Привет!
           </DialogTitle>
-          <DialogDescription className="text-center text-zinc-500">
+          <DialogDescription className="text-center text-xs md:text-base text-zinc-500">
             Войдите или зарегестрируйтесь, чтобы получать более умные ответы и
             многое другое
           </DialogDescription>

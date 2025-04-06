@@ -80,6 +80,7 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
             <div className="flex items-center space-x-1 ml-2 flex-shrink-0">
               <button
                 disabled={isPending}
+                value={message.text}
                 aria-label="Копировать сообщение"
                 className={clsx(
                   "p-1 rounded-full transition-all",
