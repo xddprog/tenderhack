@@ -1,3 +1,4 @@
+from typing import Awaitable
 import aiohttp
 from fastapi import WebSocket
 from langchain_community.vectorstores import FAISS
@@ -79,6 +80,7 @@ class PipelineService:
                                 "data": {"text": "End generating"}
                             })
                             break
+        return search_query.strip()
 
     async def process_query(
         self, 

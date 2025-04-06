@@ -62,9 +62,13 @@ async def connect_chat(
                 await manager.broadcast(chat_id, message, ChatEvents.USER)
                                 
                 message = await message_service.create("processing", user.id, chat_id, from_user=False)
-                generated_message = await pipeline_service.process_query(websocket, message.id, user_input)
+                generated_message = await pipeline_service.process_query(
+                    websocket, 
+                    message.id, 
+                    user_input, 
+                    message_service.update,
+                )
 
-                await message_service.update(text=generated_message, item_id=message.id)
     except HTTPException as e:
         await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code), event=ChatEvents.ERROR)
     finally:
