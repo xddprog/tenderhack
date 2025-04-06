@@ -52,6 +52,7 @@ async def connect_chat(
 ):
     try:
         await manager.connect(chat_id, websocket)
+        user = None
         if access_token:
             user = await auth_service.verify_token(access_token)
         if isinstance(chat_id, int):
