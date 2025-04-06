@@ -53,7 +53,7 @@ async def connect_chat(
     try:
         await manager.connect(chat_id, websocket)
         user = await auth_service.verify_token(access_token)
-        if chat:
+        if chat_id:
             chat = await chat_service.get_one(chat_id)
             title = deepcopy(chat.title)
         message_id = 1
