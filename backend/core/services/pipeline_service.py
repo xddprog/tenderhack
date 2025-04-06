@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Awaitable
 import aiohttp
 from fastapi import WebSocket
@@ -114,6 +115,10 @@ class PipelineService:
             'Инструкция_по_электронному_актированию',
             'Регламент_информационного_взаимодействия'
         ]
+        pdf_filepath_list = [
+            str(Path(__file__).resolve().parent.parent.parent  / "utils" / path)          
+            for path in pdf_filepath_list
+        ]
         chunk_vec_pdf_store = [FAISS.load_local(path, 
                                         self.embeddings, 
                                         allow_dangerous_deserialization=True) for path in vec_db_names]
@@ -125,7 +130,7 @@ class PipelineService:
 
         for i, chunk in enumerate(relevant_chunks, 1):
             print(f"{i}. {chunk}")
-            
+
         # Генерация ответа
         answer = await self.local_model_call(query, relevant_chunks, websocket, message_id)
         print(answer)
