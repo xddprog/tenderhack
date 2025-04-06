@@ -57,7 +57,7 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
           <Bot className="h-5 w-5 text-blue-400" />
         </div>
 
-        <div className="max-w-[70%] min-w-[20%] px-4 py-3 rounded-2xl bg-[#262626] text-white shadow-lg">
+        <div className="max-w-[70%] min-w-[20%] px-4 py-3 rounded-2xl bg-[#262626] text-white shadow-lg transition-opacity duration-300">
           <div className="flex items-center space-x-2">
             <div className="flex space-x-1">
               <div
