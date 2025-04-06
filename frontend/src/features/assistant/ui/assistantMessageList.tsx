@@ -26,7 +26,7 @@ export const AssistantMessageList: FC<IAssistantMessageList> = ({
           {messages.map((message) => (
             <AssistantMessageItem key={message.id} message={message} />
           ))}
-          {!isLoadingRepeat && (
+          {isLoadingRepeat && (
             <div className="flex w-full items-start gap-2 mb-3 justify-start">
               <div className="flex-shrink-0 pt-1">
                 <Bot className="h-5 w-5 text-blue-400" />
