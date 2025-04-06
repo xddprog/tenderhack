@@ -38,7 +38,7 @@ async def create_chat(
     return await chat_service.create(user_id=current_user.id)
 
 
-@router.websocket("/{chat_id}")
+@router.websocket("/")
 @inject
 async def connect_chat(
     websocket: WebSocket,
