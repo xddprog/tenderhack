@@ -47,8 +47,8 @@ async def connect_chat(
     manager: FromDishka[WebSocketManager],
     pipeline_service: FromDishka[services.PipelineService],
     chat_service: FromDishka[services.ChatService],
-    access_token: str | None = None,
-    chat_id: int | None = None,
+    access_token: str | None,
+    chat_id: int | None,
 ):
     try:
         await manager.connect(chat_id, websocket)
