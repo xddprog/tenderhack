@@ -85,7 +85,7 @@ async def connect_chat(
             if user:
                 await message_service.update(message.id, text=generated_message)
 
-            if not title:
+            if not title and chat:
                 generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
                 chat = await chat_service.update(chat_id, title=generated_title)
                 await manager.broadcast(chat_id, chat, ChatEvents.CHAT_TITLE)
