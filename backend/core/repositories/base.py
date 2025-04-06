@@ -45,6 +45,7 @@ class SqlAlchemyRepository[ModelType](RepositoryInterface[ModelType]):
         )
         item: Result = await self.session.execute(query)
         await self.session.commit()
+        await self.session.refresh(item)
         return item.scalars().all()[0]
 
     async def get_model(self, **kwargs: int) -> ModelType:
