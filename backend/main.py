@@ -23,13 +23,13 @@ def create_lifespan(di_container: AsyncContainer):
         # albert.save_model_and_data()
 
         await db.create_tables()
-        FaissService.create_and_save_vector_db()
+        # FaissService.create_and_save_vector_db()
         # print(faiss.search({
         #     "distances": [0.12, 0.45],
         #     "texts": ["Машинное обучение — это...", "Алгоритмы ML помогают..."]
         # }))
         yield
-    return lifespan
+    return lifespan 
 
 
 di_container = setup_container()
