@@ -69,14 +69,14 @@ async def connect_chat(
             user_input = user_input["content"]
 
             if user:
-                message = await message_service.create(user_input, user.id, chat_id, from_user=True)
+                message = await message_service.create(user_input, user.id, int(chat_id), from_user=True)
             else:
                 message = MessageModel(id=message_id, text=user_input, from_user=True, created_at=datetime.now())
                 message_id += 1
             await manager.broadcast(chat_id, message, ChatEvents.USER)
                             
             if user:
-                message = await message_service.create("processing", user.id, chat_id, from_user=False)
+                message = await message_service.create("processing", user.id, int(chat_id), from_user=False)
             else:
                 message = MessageModel(id=message_id, text="processing", from_user=False, created_at=datetime.now())
                 message_id += 1
@@ -87,8 +87,8 @@ async def connect_chat(
 
             if not title and chat:
                 generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
-                chat = await chat_service.update(chat_id, title=generated_title)
-                await manager.broadcast(chat_id, chat, ChatEvents.CHAT_TITLE)
+                chat = await chat_service.update(int(chat_id), title=generated_title)
+                await manager.broadcast(int(chat_id), chat, ChatEvents.CHAT_TITLE)
 
     except HTTPException as e:
         await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code), event=ChatEvents.ERROR)
