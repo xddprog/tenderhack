@@ -1,3 +1,4 @@
+import asyncio
 import json
 from typing import Annotated
 from dishka import FromDishka
@@ -50,18 +51,20 @@ async def connect_chat(
     try:
         await manager.connect(chat_id, websocket)
         user = await auth_service.verify_token(access_token)
+        lock = asyncio.Lock()
         
         while True:
-            user_input = await websocket.receive_json()
-            user_input = user_input["content"]
+            async with lock: 
+                user_input = await websocket.receive_json()
+                user_input = user_input["content"]
 
-            message = await message_service.create(user_input, user.id, chat_id, from_user=True)
-            await manager.broadcast(chat_id, message, ChatEvents.USER)
- 
-            connection = manager.active_connections.get(chat_id)
-            generated_message = await pipeline_service.process_query(connection, user_input)
-            message = await message_service.create(generated_message, user.id, chat_id, from_user=False)
-            # await manager.broadcast(chat_id, message, ChatEvents.GPT)
+                message = await message_service.create(user_input, user.id, chat_id, from_user=True)
+                await manager.broadcast(chat_id, message, ChatEvents.USER)
+                                
+                message = await message_service.create("processing", user.id, chat_id, from_user=False)
+                generated_message = await pipeline_service.process_query(websocket, message.id, user_input)
+
+                await message_service.update(text=generated_message, item_id=message.id)
     except HTTPException as e:
         await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code), event=ChatEvents.ERROR)
     finally:

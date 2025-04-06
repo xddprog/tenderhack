@@ -25,8 +25,8 @@ class BaseDbModelService[ModelType](DbModelServiceInterface[ModelType]):
     async def create(self, **kwargs):
         return await self.repository.add_item(**kwargs)
     
-    async def update(self, item_id: int, item: BaseModel):
-        return await self.repository.update_item(item_id, **item)
+    async def update(self, item_id: int, **kwargs: str | int):
+        return await self.repository.update_item(item_id, **kwargs)
     
     async def delete(self, item_id: int):
         item = await self.repository.get_item(item_id)

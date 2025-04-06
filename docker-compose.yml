@@ -5,14 +5,14 @@ services:
     image: ollama/ollama:latest
     container_name: ollama
     ports:
-      - "11435:11434"  # Внешний порт:11435 → внутренний :11434
+      - "11435:11434"
     volumes:
       - ./ollama_data:/root/.ollama
     networks:
       - app-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "ollama", "serve"]  # Проверка доступности сервиса
+      test: ["CMD", "ollama", "serve"]
       interval: 10s
       timeout: 5s
       retries: 5
