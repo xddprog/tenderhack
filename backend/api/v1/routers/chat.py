@@ -72,3 +72,4 @@ async def connect_chat(
         await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code), event=ChatEvents.ERROR)
     finally:
         await manager.disconnect(chat_id)
+        

@@ -8,6 +8,7 @@ class Message(Base):
 
     chat_id: Mapped[int] = mapped_column(ForeignKey("chats.id"))
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    liked: Mapped[bool] = mapped_column(default=None, nullable=True)
     text: Mapped[str]
     from_user: Mapped[bool]
     chat = relationship("Chat", back_populates="messages")

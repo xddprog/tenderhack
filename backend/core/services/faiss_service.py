@@ -1,11 +1,14 @@
+from pathlib import Path
 import warnings
+
+from langchain_community.document_loaders import PDFPlumberLoader
 
 from backend.infrastructure.config.database_configs import FAISS_CONFIG
 warnings.filterwarnings('ignore')
 
 import pandas as pd
 from langchain.docstore.document import Document
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import CharacterTextSplitter, RecursiveCharacterTextSplitter
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 
@@ -17,7 +20,31 @@ class FaissService:
         if 'Заголовок статьи' not in df.columns or 'Описание' not in df.columns:
             raise ValueError("Excel file must contain 'Заголовок статьи' and 'Описание' columns")
         
+        pdf_filepath_list = [
+            'Инструкция_по_работе_с_Порталом_для_заказчика.pdf',
+            'Инструкция_по_работе_с_Порталом_для_поставщика.pdf',
+            'Инструкция_по_электронному_актированию.pdf',
+            'Регламент_информационного_взаимодействия.pdf'
+        ]
+        pdf_filepath_list = [
+            str(Path(__file__).resolve().parent.parent.parent  / "utils" /"faiss_data" / path)
+            for path in pdf_filepath_list
+        ]
+        loader_list = [PDFPlumberLoader(path) for path in pdf_filepath_list]
+        [print(loader) for loader in loader_list]
+
+        documents = [loader.load() for loader in loader_list]
+        [print(doc) for doc in documents]
+
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+        pdf_dict = {i: filename for i, filename in enumerate(pdf_filepath_list)}
+        chuncks_list = [text_splitter.split_documents(doc) for doc in documents]
+                
         embeddings = HuggingFaceEmbeddings(model_name='bert-base-multilingual-cased')
+        
+        vector_store_list = [FAISS.from_documents(chunks, embeddings) for chunks in chuncks_list]
+        for storage, filepath in zip(vector_store_list, pdf_filepath_list):
+            storage.save_local(filepath[:-4])
         
         title_docs = [
             Document(page_content=row['Заголовок статьи'], metadata={'article': row['Заголовок статьи']})
