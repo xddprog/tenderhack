@@ -12,7 +12,6 @@ export const useSendMessage = () => {
   const socket = useAppSelector(socketSelectors.socket);
   const messages = useAppSelector(messageSelectors.messages);
   const currentChatId = useAppSelector(chatSelectors.currentChatId);
-  //обработать случай без реги юзера
   const { setCurrentChatId, setWebSocket } = useActions();
 
   const [isPending, startTransition] = useTransition();
@@ -30,7 +29,9 @@ export const useSendMessage = () => {
         const newChat = await setNewChat();
         chatId = newChat.id;
         currentSocket = new WebSocket(
-          `${`ws://89.104.68.181/api/v1/chat/${newChat.id}?access_token=${getAccessToken()}`}`
+          `${`ws://89.104.68.181/api/v1/chat/${
+            newChat.id
+          }?access_token=${getAccessToken()}`}`
         );
 
         currentSocket.onopen = () => {

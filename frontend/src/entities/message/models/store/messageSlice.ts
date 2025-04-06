@@ -5,7 +5,7 @@ import { IMessageSlice } from "../types/types";
 
 const initialState: IMessageSlice = {
   messages: [],
-  isTyping: false,
+  isTyping: null,
 };
 
 export const messageSlice = createSlice({
@@ -43,7 +43,7 @@ export const messageSlice = createSlice({
       state.messages = [];
     }),
     toggleTyping: create.reducer(
-      (state, { payload }: PayloadAction<boolean>) => {
+      (state, { payload }: PayloadAction<null | number>) => {
         state.isTyping = payload;
       }
     ),

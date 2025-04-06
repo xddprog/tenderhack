@@ -19,12 +19,12 @@ export const useChatSocket = () => {
     "gptMessage",
     ({ data }: { data: IMessage; event: string }) => {
       setNewMessage(data);
-      toggleTyping(true);
+      toggleTyping(data.id);
     }
   );
 
   useWebSocketEvents("gptMessageEnd", () => {
-    toggleTyping(false);
+    toggleTyping(null);
   });
 
   return {

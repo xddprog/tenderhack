@@ -20,7 +20,7 @@ interface IAssistantMessageItem {
 
 const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
   const { handleCopyClick, isCopied, isPending } = useCopied();
-  const isTyping = useAppSelector(messageSelectors.isTyping);
+  const isTyping = useAppSelector(messageSelectors.isTyping) === message.id;
 
   return (
     <div
