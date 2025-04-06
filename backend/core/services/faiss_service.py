@@ -27,7 +27,7 @@ class FaissService:
             'Регламент_информационного_взаимодействия.pdf'
         ]
         pdf_filepath_list = [
-            str(Path(__file__).resolve().parent.parent.parent / "backend" / "utils" / path)          
+            str(Path(__file__).resolve().parent.parent.parent  / "utils" / path)          
             for path in pdf_filepath_list
         ]
         loader_list = [PDFPlumberLoader(path) for path in pdf_filepath_list]
