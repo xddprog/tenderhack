@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUp, Mic } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import React, {
   ChangeEvent,
   KeyboardEvent,

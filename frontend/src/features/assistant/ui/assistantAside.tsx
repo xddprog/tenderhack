@@ -78,7 +78,7 @@ export const AssistantAside: FC<IAssistantAside> = ({
                       onClick={handleOpenChat}
                     >
                       <p className="dark:text-zinc-300 text-[14px] text-zinc-600 line-clamp-1 break-words">
-                        {history.title}
+                        {history.title ? history.title : "новый чат"}
                       </p>
                     </button>
                   ))}
