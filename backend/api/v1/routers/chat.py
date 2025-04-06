@@ -1,4 +1,5 @@
 import asyncio
+from copy import deepcopy
 import json
 from typing import Annotated
 from dishka import FromDishka
@@ -52,9 +53,10 @@ async def connect_chat(
     try:
         await manager.connect(chat_id, websocket)
         user = await auth_service.verify_token(access_token)
+        chat = await chat_service.get_one(chat_id)
+        title =  deepcopy(chat.title)
         
         while True:
-            chat = await chat_service.get_one(chat_id)
             user_input = await websocket.receive_json()
             user_input = user_input["content"]
 
@@ -68,7 +70,7 @@ async def connect_chat(
                 user_input, 
             )
 
-            if not chat.title:
+            if not title:
                 generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
                 chat = await chat_service.update(chat.id, title=generated_title)
                 await manager.broadcast(chat_id, chat, ChatEvents.TITLE)
