@@ -47,11 +47,13 @@ async def connect_chat(
     auth_service: FromDishka[services.AuthService],
     manager: FromDishka[WebSocketManager],
     pipeline_service: FromDishka[services.PipelineService],
+    chat_service: FromDishka[services.ChatService],
 ):
     try:
         await manager.connect(chat_id, websocket)
         user = await auth_service.verify_token(access_token)
         lock = asyncio.Lock()
+        chat = await chat_service.get_one(chat_id)
         
         while True:
             async with lock: 
@@ -67,6 +69,11 @@ async def connect_chat(
                     message.id, 
                     user_input, 
                 )
+
+                if not chat.title:
+                    generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
+                    chat = await chat_service.update(chat.id, title=generated_title)
+                    await manager.broadcast(chat_id, chat, ChatEvents.TITLE)
 
     except HTTPException as e:
         await manager.broadcast(chat_id, WebsocketError(detail=e.detail, status=e.status_code), event=ChatEvents.ERROR)
