@@ -59,7 +59,7 @@ async def connect_chat(
         chat = None
         if access_token:
             user = await auth_service.verify_token(access_token)
-        if isinstance(chat_id, str) and not chat_id.isdigit():
+        if isinstance(chat_id, str):
             chat = await chat_service.get_one(chat_id)
             title = deepcopy(chat.title)
         else:
