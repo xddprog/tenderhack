@@ -1,7 +1,7 @@
 "use client";
 import { userSelectors } from "@/entities/user/models/store/userSlice";
 import { AnalyticsList } from "@/features/analytics/ui/analyticsLIst";
-import { Menu, User2Icon } from "lucide-react";
+import { ArrowDown, ArrowUp, Menu, User2Icon } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/shared/ui/sheet/sheet";
 import { useAppSelector } from "@/shared/hooks/useAppSelector";
 import { DialogTitle } from "@/shared/ui/dialog/dialog";
@@ -36,6 +36,45 @@ const DashboardPage = () => {
         </div>
       </section>
       <AnalyticsList />
+      <div className="bg-neutral-800 rounded-lg mx-6 p-6 shadow-lg">
+        <h3 className="text-xl font-semibold mb-4">
+          Общая статистика запросов
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <div className="space-y-2">
+            <p className="text-neutral-400 text-sm">Всего запросов</p>
+            <p className="text-2xl font-bold">247</p>
+            <p className="text-green-500 text-sm flex items-center">
+              <ArrowUp className="h-4 w-4 mr-1" /> 12% за час
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-neutral-400 text-sm">Среднее время ответа</p>
+            <p className="text-2xl font-bold">8.2 сек</p>
+            <p className="text-green-500 text-sm flex items-center">
+              <ArrowUp className="h-4 w-4 mr-1" /> Быстрее на 0.8 сек
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-neutral-400 text-sm">Удовлетворенность</p>
+            <p className="text-2xl font-bold">87%</p>
+            <p className="text-red-500 text-sm flex items-center">
+              <ArrowDown className="h-4 w-4 mr-1" /> На 3% ниже
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-neutral-400 text-sm">Новые темы</p>
+            <p className="text-2xl font-bold">14</p>
+            <p className="text-green-500 text-sm flex items-center">
+              <ArrowUp className="h-4 w-4 mr-1" /> 5 за час
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
