@@ -69,6 +69,8 @@ export const messageSlice = createSlice({
             ...existingMessage,
             liked: payload.liked,
           };
+
+          state.messages = updatedMessages;
         }
       }
     ),

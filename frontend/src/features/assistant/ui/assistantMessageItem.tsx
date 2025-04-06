@@ -136,7 +136,7 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
                     <ThumbsUp
                       className={clsx(
                         "h-3 w-3",
-                        message.liked && "bg-blue-400"
+                        message.liked && "fill-blue-400"
                       )}
                     />
                   </button>
@@ -150,7 +150,7 @@ const AssistantMessageItem: FC<IAssistantMessageItem> = ({ message }) => {
                     <ThumbsDown
                       className={clsx(
                         "h-3 w-3",
-                        message.liked === false && "bg-blue-400"
+                        message.liked === false && "fill-blue-400"
                       )}
                     />
                   </button>
