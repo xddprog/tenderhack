@@ -38,7 +38,7 @@ async def create_chat(
     return await chat_service.create(user_id=current_user.id)
 
 
-@router.websocket("/")
+@router.websocket("/{chat_id}")
 @inject
 async def connect_chat(
     websocket: WebSocket,
@@ -48,7 +48,7 @@ async def connect_chat(
     pipeline_service: FromDishka[services.PipelineService],
     chat_service: FromDishka[services.ChatService],
     access_token: str | None = None,
-    chat_id: int | None = None,
+    chat_id: int | str | None = None,
 ):
     try:
         await manager.connect(chat_id, websocket)
