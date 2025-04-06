@@ -41,7 +41,6 @@ async def create_chat(
 @router.websocket("/{chat_id}")
 @inject
 async def connect_chat(
-    chat_id: int,
     websocket: WebSocket,
     message_service: FromDishka[services.MessageService],
     auth_service: FromDishka[services.AuthService],
@@ -49,12 +48,15 @@ async def connect_chat(
     pipeline_service: FromDishka[services.PipelineService],
     chat_service: FromDishka[services.ChatService],
     access_token: str | None = None,
+    chat_id: int | None = None,
 ):
     try:
         await manager.connect(chat_id, websocket)
         user = await auth_service.verify_token(access_token)
-        chat = await chat_service.get_one(chat_id)
-        title = deepcopy(chat.title)
+        if chat:
+            chat = await chat_service.get_one(chat_id)
+            title = deepcopy(chat.title)
+        message_id = 1
         
         while True:
             user_input = await websocket.receive_json()
@@ -62,17 +64,24 @@ async def connect_chat(
 
             if user:
                 message = await message_service.create(user_input, user.id, chat_id, from_user=True)
+            else:
+                message = MessageModel(id=message_id, text=user_input, from_user=True)
+                message_id += 1
             await manager.broadcast(chat_id, message, ChatEvents.USER)
                             
             if user:
                 message = await message_service.create("processing", user.id, chat_id, from_user=False)
+            else:
+                message = MessageModel(id=message_id, text="processing", from_user=False)
+                message_id += 1
 
             generated_message = await pipeline_service.process_query(
                 websocket, 
                 message.id, 
                 user_input, 
             )
-            await message_service.update(message.id, text=generated_message)
+            if user:
+                await message_service.update(message.id, text=generated_message)
 
             if not title:
                 generated_title = await pipeline_service.get_chat_title(user_input, generated_message)
