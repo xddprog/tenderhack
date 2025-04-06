@@ -74,7 +74,7 @@ export const useSendMessage = () => {
 
         currentSocket.onopen = () => {
           if (currentSocket) {
-            setWebSocket(currentSocket);
+            // setWebSocket(currentSocket);x
             currentSocket!.send(JSON.stringify({ content }));
             setIsLoadingRepeat(true);
           }
